@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Colors - Minimalist Palette */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+
+  --color-accent-primary: var(--accent-primary);
+  
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
+  /* Fonts */
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+  --font-writing: var(--font-writing);
+
+  /* Animations */
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-pulse-glow: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 8s linear infinite;
+}
+
+:root {
+  /* Ultra Dark Monochromatic Minimalist Theme */
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --surface: #0A0A0A;
+  --surface-elevated: #111111;
+
+  --accent-primary: #FFFFFF; /* High contrast white accent */
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #999999;
+  --text-tertiary: #555555;
+}
+
+[data-theme="light"] {
+  --background: #FFFFFF;
+  --foreground: #000000;
+  --surface: #F5F5F5;
+  --surface-elevated: #EEEEEE;
+
+  --accent-primary: #000000;
+
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --text-tertiary: #AAAAAA;
+}
+
+/* Glassmorphism replaced with Solid/Minimalist Utility */
+@layer utilities {
+  .glass {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  [data-theme="light"] .glass {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Base Styles */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Cursor overrides */
+a, button, input, [role="button"] {
+  cursor: none !important;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.02em; /* Tighter tracking for premium feel */
+}
+
+/* Scrollbar - Hidden for premium feel */
+::-webkit-scrollbar {
+  display: none;
+}
+html {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  /* Fluid typography: perfectly scales the rem unit across all breakpoints */
+  font-size: clamp(14px, 1vw + 10px, 18px); 
+}
+
+/* Selection */
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* Focus Rings */
+*:focus-visible {
+  outline: 1px solid var(--text-tertiary);
+  outline-offset: 4px;
+}
+
+/* View Transitions for Theme Toggle */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+[data-theme="dark"]::view-transition-old(root) {
+  z-index: 9999;
+}
+[data-theme="dark"]::view-transition-new(root) {
+  z-index: 1;
+}
