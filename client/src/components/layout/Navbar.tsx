@@ -32,38 +32,47 @@ export const Navbar = () => {
 
   return (
     <>
+      {/* Outer header: responsive padding when scrolled */}
       <header
-        className={`fixed z-50 transition-all duration-500 ${
-          isScrolled 
-            ? "top-4 left-4 right-4 md:left-12 md:right-12 lg:left-24 lg:right-24 bg-background/90 backdrop-blur-xl border border-text-tertiary/20 rounded-full py-3 px-6 md:px-8 shadow-xl" 
-            : "top-0 left-0 right-0 bg-transparent py-8 px-4 md:px-12 lg:px-24"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled ? "pt-0 sm:pt-4 sm:px-4 md:px-12 lg:px-24" : "py-6 px-4 md:px-12 lg:px-24"
         }`}
       >
-        <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
-          {/* Minimalist Logo */}
-          <Link href="/" className="flex items-center gap-2 group overflow-hidden">
-            <span className="font-display font-bold text-2xl tracking-tighter uppercase group-hover:-translate-y-full transition-all duration-500 block relative text-text-primary">
+        {/* Inner container */}
+        <div
+          className={`flex items-center justify-between mx-auto w-full min-w-0 transition-all duration-500 ${
+            isScrolled
+              ? "max-w-7xl bg-background/90 backdrop-blur-xl border-b sm:border border-text-tertiary/20 rounded-none sm:rounded-full py-2 px-4 sm:py-3 sm:px-6 shadow-xl"
+              : "max-w-7xl"
+          }`}
+        >
+          {/* Logo */}
+          <Link href="/" className="flex items-center group overflow-hidden shrink-0 z-10">
+            <span className="font-display font-bold text-lg sm:text-xl md:text-2xl tracking-tighter uppercase group-hover:-translate-y-full transition-all duration-500 block relative text-text-primary">
               MOVEO
-              <span className="absolute top-full left-0 font-display font-bold text-2xl tracking-tighter uppercase text-text-primary">
+              <span className="absolute top-full left-0 font-display font-bold text-lg sm:text-xl md:text-2xl tracking-tighter uppercase text-text-primary">
                 MOVEO
               </span>
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-            <ul className="flex items-center gap-8">
+          {/* Desktop Navigation - Absolutely Centered */}
+          <nav className="hidden md:block absolute left-1/2 -translate-x-1/2 z-0">
+            <ul className="flex items-center gap-4 lg:gap-8">
               {MODULES.map((mod) => (
                 <li key={mod.id}>
                   <Link
                     href={mod.path}
-                    className={`text-sm font-medium uppercase tracking-widest transition-colors ${
+                    className={`relative text-sm font-medium uppercase tracking-widest transition-all ${
                       pathname.startsWith(mod.path)
                         ? "text-text-primary font-bold"
                         : "text-text-tertiary hover:text-text-primary"
                     }`}
                   >
                     {mod.label}
+                    {pathname.startsWith(mod.path) && (
+                      <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-text-primary rounded-full" />
+                    )}
                   </Link>
                 </li>
               ))}
@@ -71,7 +80,7 @@ export const Navbar = () => {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3 z-10">
             <ThemeToggle />
             {!pathname.startsWith('/login') && !pathname.startsWith('/signup') && (
               <Link href="/login">
@@ -80,7 +89,7 @@ export const Navbar = () => {
                 </Button>
               </Link>
             )}
-            <button 
+            <button
               onClick={() => setIsSidebarOpen(true)}
               className="p-2 hover:bg-surface-elevated rounded-full transition-colors flex items-center gap-2 text-text-primary"
             >
@@ -89,19 +98,19 @@ export const Navbar = () => {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-4">
+          {/* Mobile Actions */}
+          <div className="flex md:hidden items-center gap-1.5 z-10">
             <ThemeToggle />
             {!pathname.startsWith('/login') && !pathname.startsWith('/signup') && (
-               <Link href="/login" className="text-text-primary">
-                 <HugeiconsIcon icon={UserCircleIcon} size={24} />
-               </Link>
-             )}
-            <button 
+              <Link href="/login" className="text-text-primary p-1">
+                <HugeiconsIcon icon={UserCircleIcon} size={20} />
+              </Link>
+            )}
+            <button
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 focus:outline-none text-text-primary"
+              className="p-1.5 focus:outline-none text-text-primary"
             >
-              <HugeiconsIcon icon={Menu01Icon} size={24} />
+              <HugeiconsIcon icon={Menu01Icon} size={20} />
             </button>
           </div>
         </div>

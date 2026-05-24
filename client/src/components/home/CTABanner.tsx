@@ -45,7 +45,7 @@ export const CTABanner = () => {
           <p className="text-text-secondary text-sm">
             We have been helping millions of users book their travel and entertainment seamlessly and fast in the first place.
           </p>
-          <Button variant="primary" className="rounded-none px-8">
+          <Button variant="primary" className="rounded-full px-8">
             Book Now &rarr;
           </Button>
         </div>

@@ -41,10 +41,10 @@
 }
 
 [data-theme="light"] {
-  --background: #FFFFFF;
+  --background: #FAFAFA;
   --foreground: #000000;
-  --surface: #F5F5F5;
-  --surface-elevated: #EEEEEE;
+  --surface: #F0F0F0;
+  --surface-elevated: #E5E5E5;
 
   --accent-primary: #000000;
 
@@ -93,6 +93,7 @@ html {
   scrollbar-width: none;  /* Firefox */
   /* Fluid typography: perfectly scales the rem unit across all breakpoints */
   font-size: clamp(14px, 1vw + 10px, 18px); 
+  overflow-x: hidden;
 }
 
 /* Selection */

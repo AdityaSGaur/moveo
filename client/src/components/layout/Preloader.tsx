@@ -101,10 +101,10 @@ export const Preloader = () => {
       />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center gap-8">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-6 sm:gap-8 w-full px-4">
         <h1
           ref={textRef}
-          className="text-6xl md:text-8xl lg:text-[11rem] font-display font-bold text-text-primary tracking-tighter leading-none uppercase"
+          className="text-[20vw] sm:text-6xl md:text-8xl lg:text-[11rem] font-display font-bold text-text-primary tracking-tighter leading-none uppercase text-center w-full"
         >
           {/* Quddus-inspired text split layout */}
           <span className="block text-center">{`MOVEO`}</span>
@@ -112,13 +112,13 @@ export const Preloader = () => {
         
         <div 
           ref={counterRef}
-          className="flex items-center gap-2"
+          className="flex items-center justify-center gap-2 sm:gap-4 w-full"
         >
-          <div className="h-px w-12 bg-text-tertiary/20" />
-          <span className="font-mono text-xl md:text-3xl font-medium text-text-primary w-16 text-center tabular-nums">
+          <div className="h-px w-[15vw] max-w-[3rem] bg-text-tertiary/20" />
+          <span className="font-mono text-[5vw] sm:text-xl md:text-3xl font-medium text-text-primary text-center tabular-nums w-[20vw] max-w-[4rem]">
             {progress}%
           </span>
-          <div className="h-px w-12 bg-text-tertiary/20" />
+          <div className="h-px w-[15vw] max-w-[3rem] bg-text-tertiary/20" />
         </div>
       </div>
     </div>

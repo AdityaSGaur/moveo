@@ -62,7 +62,7 @@ export const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, items, view
           {title}
         </h2>
         {viewAllLink && (
-          <Link href={viewAllLink} className="text-sm font-medium text-accent-primary hover:text-white transition-colors flex items-center gap-1 group">
+          <Link href={viewAllLink} className="text-sm uppercase font-bold tracking-wider text-accent-primary hover:text-white transition-colors flex items-center gap-1 group">
             View All
             <HugeiconsIcon icon={ArrowRight01Icon} size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>

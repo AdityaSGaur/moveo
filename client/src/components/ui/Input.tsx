@@ -27,13 +27,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {icon && (
             <div className="absolute left-4 text-text-tertiary">{icon}</div>
           )}
-          <input
-            ref={ref}
-            id={inputId}
-            className={`
-              w-full bg-[#1A1A2E] text-text-primary placeholder:text-text-tertiary
-              border border-white/5 rounded-xl px-4 py-3
-              transition-all duration-300 ease-out
+            <input
+              ref={ref}
+              id={inputId}
+              className={`
+                w-full bg-[#1A1A2E] text-text-primary placeholder:text-text-tertiary
+                border border-white/5 rounded-xl px-4 py-3 text-ellipsis
+                transition-all duration-300 ease-out
               focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary
               disabled:opacity-50 disabled:cursor-not-allowed
               ${icon ? "pl-11" : ""}

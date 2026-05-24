@@ -71,7 +71,7 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-4 overflow-hidden bg-background">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24 pb-48">
       
       {/* Abstract Squiggly SVG Background */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none text-text-tertiary opacity-40" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" fill="none">
@@ -97,7 +97,7 @@ export const Hero = () => {
         
         {/* Main Title Container */}
         <div className="relative mb-8 w-full flex justify-center items-center">
-          <h1 ref={textRef} className="text-6xl md:text-8xl lg:text-[11rem] font-display font-bold tracking-tighter leading-none text-text-primary uppercase">
+          <h1 ref={textRef} className="text-5xl sm:text-6xl md:text-8xl lg:text-[11rem] font-display font-bold tracking-tighter leading-none text-text-primary uppercase">
             MOVEO
           </h1>
           {/* Small side texts */}
@@ -110,7 +110,7 @@ export const Hero = () => {
         </div>
 
         {/* Small Pills */}
-        <div className="flex items-center gap-4 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 fill-mode-both">
+        <div className="flex flex-wrap justify-center items-center gap-4 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 fill-mode-both">
           <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide">Movies</span>
           <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide">Buses</span>
           <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide">Trains</span>
@@ -122,7 +122,7 @@ export const Hero = () => {
         </p>
 
         {/* Small Icons Row */}
-        <div className="flex items-center gap-8 text-text-tertiary animate-in fade-in duration-1000 delay-1000 fill-mode-both">
+        <div className="flex flex-wrap justify-center items-center gap-8 text-text-tertiary animate-in fade-in duration-1000 delay-1000 fill-mode-both">
           <HugeiconsIcon icon={VideoReplayIcon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
           <HugeiconsIcon icon={Bus01Icon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
           <HugeiconsIcon icon={Train01Icon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />

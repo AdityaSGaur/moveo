@@ -73,7 +73,7 @@ export const TrendingSection = () => {
             <Badge variant="movie" className="mb-4">Trending Now</Badge>
             <h2 className="text-4xl md:text-5xl font-display font-bold">Recommended Movies</h2>
           </div>
-          <Button variant="ghost" className="hidden md:flex">
+          <Button variant="ghost" className="hidden md:flex uppercase text-sm font-light tracking-wider">
             View All
           </Button>
         </div>
@@ -139,7 +139,7 @@ export const TrendingSection = () => {
         </div>
         
         <div className="mt-8 md:hidden flex justify-center">
-           <Button variant="outline" className="w-full sm:w-auto">
+           <Button variant="outline" className="w-full sm:w-auto uppercase text-sm font-light tracking-wider">
             View All Movies
           </Button>
         </div>

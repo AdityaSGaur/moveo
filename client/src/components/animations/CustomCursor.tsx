@@ -58,10 +58,11 @@ export const CustomCursor = () => {
       const target = e.target as HTMLElement;
       if (target.closest("a, button, input, [role='button'], .cursor-pointer")) {
         gsap.to(follower, {
-          width: 64,
-          height: 64,
-          backgroundColor: "#ffffff",
-          borderColor: "transparent",
+          width: 56,
+          height: 56,
+          backgroundColor: "rgba(0, 0, 0, 0.12)",
+          borderColor: "rgba(0, 0, 0, 0.25)",
+          mixBlendMode: "normal",
           duration: 0.3,
         });
       }
@@ -75,6 +76,7 @@ export const CustomCursor = () => {
           height: 40,
           backgroundColor: "transparent",
           borderColor: "rgba(255, 255, 255, 0.5)",
+          mixBlendMode: "difference",
           duration: 0.3,
         });
       }
@@ -103,11 +105,11 @@ export const CustomCursor = () => {
         className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block opacity-0"
         style={{ willChange: 'transform' }}
       />
-      {/* Smooth follower ring */}
+      {/* Smooth follower ring - no mix-blend by default, controlled dynamically */}
       <div 
         ref={followerRef} 
-        className="fixed top-0 left-0 w-10 h-10 bg-transparent border border-white/50 rounded-full pointer-events-none z-[9998] mix-blend-difference hidden md:block opacity-0"
-        style={{ willChange: 'transform, width, height' }}
+        className="fixed top-0 left-0 w-10 h-10 bg-transparent border border-white/50 rounded-full pointer-events-none z-[9998] hidden md:block opacity-0"
+        style={{ willChange: 'transform, width, height', mixBlendMode: 'difference' }}
       />
     </>
   );
