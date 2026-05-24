@@ -78,7 +78,7 @@ body {
 }
 
 /* Custom Cursor overrides */
-a, button, input, [role="button"] {
+*, html, body {
   cursor: none !important;
 }
 
