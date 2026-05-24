@@ -108,7 +108,8 @@ export const Hero = () => {
             <Annotation
               notes={["Cinematic hero experience"]}
               arrowDirection="curve-right-down"
-              className="-top-24 -left-4 md:-top-20 md:-left-12 lg:-top-16 lg:-left-20"
+              arrowPosition="right"
+              className="-top-24 -left-16 md:-top-20 md:-left-12 lg:-top-16 lg:-left-20"
               mobileVisible={true}
               delay={3}
             />
