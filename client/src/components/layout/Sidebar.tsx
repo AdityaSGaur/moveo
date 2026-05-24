@@ -11,12 +11,13 @@ interface SidebarProps {
   onClose: () => void;
 }
 
+
+// Sync with Navbar MODULES
 const NAV_LINKS = [
   { label: "Movies", href: "/movies" },
   { label: "Buses", href: "/buses" },
   { label: "Trains", href: "/trains" },
-  { label: "Offers", href: "/offers" },
-  { label: "Contact", href: "/contact" },
+  { label: "Community", href: "/community" },
 ];
 
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
@@ -36,7 +37,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     <>
       {/* Backdrop overlay */}
       <div 
-        className={`fixed inset-0 bg-background/95 z-[60] transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-background/95 z-60 transition-opacity duration-300 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
@@ -45,7 +46,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       {/* Drawer */}
       <div 
-        className={`fixed top-0 right-0 h-full w-full max-w-sm bg-surface border-l border-text-tertiary/10 z-[70] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex flex-col ${
+        className={`fixed top-0 right-0 h-full w-full max-w-sm bg-surface border-l border-text-tertiary/10 z-70 shadow-2xl transition-transform duration-500 ease-in-out flex flex-col ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

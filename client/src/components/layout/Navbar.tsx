@@ -42,7 +42,7 @@ export const Navbar = () => {
         <div
           className={`flex items-center justify-between mx-auto w-full min-w-0 transition-all duration-500 ${
             isScrolled
-              ? "max-w-7xl bg-background/90 backdrop-blur-xl border-b sm:border border-text-tertiary/20 rounded-none sm:rounded-full py-2 px-4 sm:py-3 sm:px-6 shadow-xl"
+              ? "max-w-7xl bg-background/90 backdrop-blur-xl border-b sm:border border-text-tertiary/20 rounded-none sm:rounded-full py-2 px-4 pr-0 sm:py-3 sm:pl-6 sm:pr-3 shadow-xl"
               : "max-w-7xl"
           }`}
         >
@@ -56,8 +56,8 @@ export const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation - Absolutely Centered */}
-          <nav className="hidden md:block absolute left-1/2 -translate-x-1/2 z-0">
+          {/* Desktop Navigation - Absolutely Centered (only show on lg+) */}
+          <nav className="hidden lg:block absolute left-1/2 -translate-x-1/2 z-0">
             <ul className="flex items-center gap-4 lg:gap-8">
               {MODULES.map((mod) => (
                 <li key={mod.id}>
@@ -80,26 +80,19 @@ export const Navbar = () => {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-3 z-10">
+          <div className="hidden lg:flex items-center gap-2 z-10">
             <ThemeToggle />
             {!pathname.startsWith('/login') && !pathname.startsWith('/signup') && (
               <Link href="/login">
-                <Button variant="ghost" className="uppercase tracking-widest text-xs px-4 text-text-primary">
+                <Button variant="ghost" className="uppercase tracking-widest text-xs px-3 py-2 h-auto text-text-primary">
                   Sign In
                 </Button>
               </Link>
             )}
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="p-2 hover:bg-surface-elevated rounded-full transition-colors flex items-center gap-2 text-text-primary"
-            >
-              <span className="text-xs font-medium uppercase tracking-widest">Menu</span>
-              <HugeiconsIcon icon={Menu01Icon} size={20} />
-            </button>
           </div>
 
-          {/* Mobile Actions */}
-          <div className="flex md:hidden items-center gap-1.5 z-10">
+          {/* Mobile & Tablet Actions */}
+          <div className="flex lg:hidden items-center gap-1.5 z-10">
             <ThemeToggle />
             {!pathname.startsWith('/login') && !pathname.startsWith('/signup') && (
               <Link href="/login" className="text-text-primary p-1">
