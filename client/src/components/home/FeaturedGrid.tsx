@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/Button";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import Link from "next/link";
+import { Annotation } from "@/components/ui/Annotation";
 
 const ITEMS = [
   { id: 1, title: "Oppenheimer", subtitle: "Biography / Drama", image: "/images/poster-1.jpg?v=2", tag: "IMAX", format: "3D", price: "₹450", rating: 8.9 },
@@ -123,9 +124,18 @@ export const FeaturedGrid = () => {
   };
 
   return (
-    <section className="py-24 px-4 overflow-hidden w-full bg-background relative z-10 flex flex-col items-center">
+    <section className="py-24 px-4 w-full bg-background relative z-10 flex flex-col items-center overflow-visible">
       
-      <div className="flex flex-col items-center text-center mb-10">
+      <div className="flex flex-col items-center text-center mb-10 relative">
+        {/* Design Annotation */}
+        <Annotation
+          notes={["Cinematic cards"]}
+          arrowDirection="loop-down-left"
+          className="absolute -top-20 right-0 md:-top-24 md:-right-24 lg:-right-32 scale-75 md:scale-100 origin-right"
+          layout="row"
+          mobileVisible={true}
+        />
+        
         <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-text-tertiary mb-3">Trending</span>
         <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-text-primary mb-4">
           Trending Movies

@@ -15,7 +15,7 @@ export const RecommendedSection = () => {
 
 
   return (
-    <section className="py-24 px-4 md:px-12 lg:px-24 max-w-7xl mx-auto w-full bg-background relative z-10">
+    <section className="py-24 px-4 md:px-12 lg:px-24 max-w-7xl mx-auto w-full relative z-10 bg-background overflow-visible">
       
       {/* Background Glow */}
       <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-accent-secondary/5 blur-[120px] rounded-full pointer-events-none translate-x-1/2 -translate-y-1/2" />
@@ -40,7 +40,7 @@ export const RecommendedSection = () => {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 md:grid md:grid-cols-3 md:gap-8 relative z-10 -mx-4 px-4 md:mx-0 md:px-0 pb-4 md:pb-0">
+      <div className="flex overflow-x-auto md:overflow-visible snap-x snap-mandatory hide-scrollbar gap-4 md:grid md:grid-cols-3 md:gap-8 relative z-10 py-8 -mx-4 px-4 md:mx-0 md:px-0">
         {RECOMMENDATIONS.map((rec) => (
           <div key={rec.id} className="rec-item shrink-0 snap-center w-[85vw] md:w-auto group relative overflow-hidden rounded-3xl bg-surface border border-text-tertiary/10 transition-transform duration-500 hover:-translate-y-2 shadow-lg flex flex-col h-[400px]">
             <div className="absolute inset-0 z-0 bg-black">
@@ -73,6 +73,8 @@ export const RecommendedSection = () => {
             </div>
           </div>
         ))}
+        {/* Trailing padding for horizontal scroll to prevent shadow clipping on the last item */}
+        <div className="w-1 shrink-0 md:hidden" />
       </div>
     </section>
   );

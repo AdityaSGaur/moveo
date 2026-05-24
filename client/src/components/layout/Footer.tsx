@@ -75,7 +75,7 @@ export const Footer = () => {
   }, { scope: containerRef });
 
   return (
-    <footer ref={containerRef} className="w-full bg-background relative overflow-hidden py-24 border-t border-text-tertiary/10">
+    <footer ref={containerRef} className="w-full bg-background relative overflow-visible py-24 border-t border-text-tertiary/10">
       
       {/* Background SVG Lines */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none text-text-tertiary opacity-20" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" fill="none">

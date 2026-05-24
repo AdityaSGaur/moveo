@@ -55,7 +55,7 @@ export const CommunitySection = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="py-32 bg-surface text-text-primary overflow-hidden relative border-t border-text-tertiary/10">
+    <section ref={containerRef} className="py-32 bg-surface text-text-primary relative border-t border-text-tertiary/10 overflow-visible">
       
       {/* Optimized Background Gradient (No massive blurs) */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-primary/5 via-background to-background pointer-events-none" />

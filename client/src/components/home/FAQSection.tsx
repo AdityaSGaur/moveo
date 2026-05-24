@@ -35,8 +35,9 @@ export const FAQSection = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="py-24 px-4 md:px-12 lg:px-24 max-w-7xl mx-auto w-full bg-background relative z-10">
-      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
+    <section ref={containerRef} className="py-24 px-4 md:px-12 lg:px-24 bg-background relative z-10 border-t border-text-tertiary/10">
+      
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start max-w-7xl mx-auto w-full">
         
         {/* FAQ List */}
         <div className="w-full lg:w-1/2 faq-content">

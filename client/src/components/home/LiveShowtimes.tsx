@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Location01Icon, Time01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { Annotation } from "@/components/ui/Annotation";
 
 const SHOWTIMES = [
   { id: 1, theater: "PVR Directors Cut", distance: "2.4 km", movie: "Oppenheimer", format: "IMAX 70mm", time: "19:30", seats: "Only 8 seats left", price: "₹850" },
@@ -18,16 +19,24 @@ export const LiveShowtimes = () => {
 
   return (
     <section className="py-12 px-4 md:px-12 lg:px-24 max-w-7xl mx-auto w-full bg-background relative z-10">
+      
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6 relative z-10">
-        <div className="flex items-center gap-6 flex-1">
-          <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-text-primary flex items-center gap-3">
+        <div className="relative">
+          {/* Design Annotation */}
+          <Annotation
+            notes={["Real-time booking workflow"]}
+            arrowDirection="curve-right-down"
+            className="absolute -top-16 left-0 md:-top-12 md:left-32 scale-75 md:scale-100"
+            layout="row"
+            mobileVisible={true}
+          />
+          <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-text-primary mb-2 mt-8 md:mt-0">
             <span className="relative flex h-4 w-4">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-secondary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-4 w-4 bg-accent-secondary"></span>
             </span>
             Live Showtimes Near You
           </h2>
-          <div className="h-px flex-1 bg-gradient-to-r from-text-tertiary/20 to-transparent hidden md:block" />
         </div>
         <Link
           href="/movies"

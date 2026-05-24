@@ -41,16 +41,19 @@
 }
 
 [data-theme="light"] {
-  --background: #FAFAFA;
+  /* Experimental Earthy Palette */
+  --background: #FBF5DD;
   --foreground: #000000;
-  --surface: #F0F0F0;
-  --surface-elevated: #E5E5E5;
+  
+  /* Surfaces slightly darkened for depth against the bright cream */
+  --surface: #F0EACF; 
+  --surface-elevated: #E5DFC0;
 
-  --accent-primary: #000000;
+  --accent-primary: #1F150C;
 
   --text-primary: #000000;
-  --text-secondary: #666666;
-  --text-tertiary: #AAAAAA;
+  --text-secondary: #1F150C;
+  --text-tertiary: #6E6355; /* Muted brown for borders/tertiary text */
 }
 
 /* Glassmorphism replaced with Solid/Minimalist Utility */

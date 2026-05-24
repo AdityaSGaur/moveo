@@ -26,8 +26,9 @@ export const PartnersSection = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="py-24 px-4 md:px-12 lg:px-24 max-w-7xl mx-auto w-full bg-background border-t border-text-tertiary/10 overflow-hidden">
-      <div className="flex flex-col items-center justify-center mb-16 px-4">
+    <section ref={containerRef} className="py-24 px-4 md:px-12 lg:px-24 max-w-7xl mx-auto w-full bg-background border-t border-text-tertiary/10 relative overflow-visible">
+      
+      <div className="flex flex-col items-center justify-center mb-16 px-4 relative">
         <p className="text-text-tertiary font-display text-sm tracking-widest uppercase mb-4">Sponsored By</p>
         <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-text-primary text-center">
           Our Partners

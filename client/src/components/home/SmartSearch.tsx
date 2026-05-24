@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Tabs, Card, Button, Input } from "@/components/ui";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Search01Icon, Calendar01Icon, Location01Icon, VideoReplayIcon, Bus01Icon, Train01Icon } from "@hugeicons/core-free-icons";
+import { Annotation } from "@/components/ui/Annotation";
 
 export const SmartSearch = () => {
   const [activeTab, setActiveTab] = useState("movie");
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const tabs = [
     { id: "movie", label: "Movies", icon: <HugeiconsIcon icon={VideoReplayIcon} size={24} /> },
@@ -119,8 +121,17 @@ export const SmartSearch = () => {
   return (
     <section className="relative z-20 mb-16 px-4 w-full">
       <div className="container mx-auto max-w-5xl w-full">
-        <div className="p-2 sm:p-4 backdrop-blur-2xl bg-surface/40 border border-white/5 rounded-[2.5rem]">
+        <div ref={containerRef} className="search-container p-2 sm:p-4 backdrop-blur-2xl bg-surface/40 border border-white/5 rounded-[2.5rem] relative overflow-visible">
           
+          {/* Design Annotation */}
+          <Annotation
+            notes={["Smart discovery flow"]}
+            arrowDirection="curve-left-down"
+            className="-top-24 right-4 md:-top-32 md:-right-8"
+            mobileVisible={true}
+            delay={0.2}
+          />
+
           {/* Sleek Left-aligned Tabs */}
           <div className="flex justify-center sm:justify-start mb-4 mt-2 px-2 sm:px-4">
             <div className="inline-flex gap-2">

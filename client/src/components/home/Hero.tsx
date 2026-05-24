@@ -6,6 +6,7 @@ import { VideoReplayIcon, Bus01Icon, Train01Icon, Location01Icon, Ticket01Icon, 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { Annotation } from "@/components/ui/Annotation";
 
 export const Hero = () => {
   const path1Ref = useRef<SVGPathElement>(null);
@@ -51,23 +52,28 @@ export const Hero = () => {
       });
     });
 
-    // Reveal text
-    gsap.from(textRef.current, {
-      y: 100,
-      opacity: 0,
-      duration: 1.5,
-      ease: "power4.out",
-      delay: 2.8, // Wait for Preloader
-      onComplete: () => {
-        gsap.to(textRef.current, {
-          y: -15,
-          duration: 3,
-          yoyo: true,
-          repeat: -1,
-          ease: "sine.inOut"
-        });
+    // Reveal text and elements with a staggered bounce effect
+    gsap.fromTo(".hero-elem", 
+      { y: 50, opacity: 0, scale: 0.95 },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: "back.out(1.5)",
+        delay: 2.8, // Wait for Preloader
+        onComplete: () => {
+          gsap.to(textRef.current, {
+            y: -15,
+            duration: 3,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
+          });
+        }
       }
-    });
+    );
   }, []);
 
   return (
@@ -97,38 +103,49 @@ export const Hero = () => {
         
         {/* Main Title Container */}
         <div className="relative mb-8 w-full flex justify-center items-center">
-          <h1 ref={textRef} className="text-5xl sm:text-6xl md:text-8xl lg:text-[11rem] font-display font-bold tracking-tighter leading-none text-text-primary uppercase">
-            MOVEO
-          </h1>
+          
+          <div className="relative flex justify-center items-center">
+            <Annotation
+              notes={["Cinematic hero experience"]}
+              arrowDirection="curve-right-down"
+              className="-top-24 -left-8 md:-top-28 md:-left-32 lg:-left-40"
+              mobileVisible={true}
+              delay={3}
+            />
+            <h1 ref={textRef} className="text-6xl sm:text-7xl md:text-8xl lg:text-[11rem] font-display font-bold tracking-tighter leading-none text-text-primary uppercase opacity-0 hero-elem">
+              MOVEO
+            </h1>
+          </div>
           {/* Small side texts */}
-          <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[10px] font-mono text-text-tertiary hidden lg:block tracking-widest uppercase">
+          <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[10px] font-mono text-text-tertiary hidden lg:block tracking-widest uppercase opacity-0 hero-elem">
             Est. 2026
           </div>
-          <div className="absolute top-1/2 right-0 -translate-y-1/2 text-[10px] font-mono text-text-tertiary hidden lg:block tracking-widest uppercase">
+          <div className="absolute top-1/2 right-0 -translate-y-1/2 text-[10px] font-mono text-text-tertiary hidden lg:block tracking-widest uppercase opacity-0 hero-elem">
             Booking Platform
           </div>
+
         </div>
 
         {/* Small Pills */}
-        <div className="flex flex-wrap justify-center items-center gap-4 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 fill-mode-both">
-          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide">Movies</span>
-          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide">Buses</span>
-          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide">Trains</span>
+        <div className="flex flex-wrap justify-center items-center gap-4 mb-16 opacity-0 hero-elem">
+          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide hover:scale-105 transition-transform cursor-pointer">Movies</span>
+          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide hover:scale-105 transition-transform cursor-pointer">Buses</span>
+          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide hover:scale-105 transition-transform cursor-pointer">Trains</span>
         </div>
 
         {/* Sub-heading */}
-        <p className="text-xl md:text-2xl font-medium text-text-primary max-w-lg mb-16 leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-1000 fill-mode-both">
+        <p className="text-xl md:text-2xl font-medium text-text-primary max-w-lg mb-16 leading-relaxed opacity-0 hero-elem">
           Empowering travelers worldwide with exceptional booking solutions.
         </p>
 
         {/* Small Icons Row */}
-        <div className="flex flex-wrap justify-center items-center gap-8 text-text-tertiary animate-in fade-in duration-1000 delay-1000 fill-mode-both">
-          <HugeiconsIcon icon={VideoReplayIcon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
-          <HugeiconsIcon icon={Bus01Icon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
-          <HugeiconsIcon icon={Train01Icon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
-          <HugeiconsIcon icon={Ticket01Icon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
-          <HugeiconsIcon icon={Calendar01Icon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
-          <HugeiconsIcon icon={Location01Icon} size={20} className="hover:text-text-primary transition-colors cursor-pointer" />
+        <div className="flex flex-wrap justify-center items-center gap-8 text-text-tertiary opacity-0 hero-elem">
+          <HugeiconsIcon icon={VideoReplayIcon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
+          <HugeiconsIcon icon={Bus01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
+          <HugeiconsIcon icon={Train01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
+          <HugeiconsIcon icon={Ticket01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
+          <HugeiconsIcon icon={Calendar01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
+          <HugeiconsIcon icon={Location01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
         </div>
 
       </div>

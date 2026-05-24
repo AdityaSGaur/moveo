@@ -34,8 +34,9 @@ export const WhyMoveo = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="py-24 px-4 md:px-12 lg:px-24 max-w-6xl mx-auto w-full bg-background border-t border-text-tertiary/10">
-      <div className="text-center mb-16">
+    <section ref={containerRef} className="py-24 px-4 md:px-12 lg:px-24 max-w-6xl mx-auto w-full bg-background border-t border-text-tertiary/10 relative overflow-visible">
+      
+      <div className="text-center mb-16 relative">
         <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-text-primary mb-4">
           Why Moveo?
         </h2>

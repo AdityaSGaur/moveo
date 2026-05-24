@@ -70,7 +70,7 @@ export const PopularRoutes = () => {
       </div>
 
       {/* Cards Grid — horizontally scrollable on mobile, grid on tablet/desktop */}
-      <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4 md:pb-0 gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 -mx-4 px-4 md:mx-0 md:px-0">
+      <div className="flex overflow-x-auto md:overflow-visible snap-x snap-mandatory hide-scrollbar py-8 gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 -mx-4 px-4 md:mx-0 md:px-0">
         {ROUTES.map((route) => (
           <Link
             key={route.id}
@@ -85,14 +85,8 @@ export const PopularRoutes = () => {
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 loading="lazy"
               />
-              {/* Strong cinematic gradient — always keeps text readable */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.08) 70%, transparent 100%)",
-                }}
-              />
+              {/* Subtle Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
             </div>
 
             {/* Top-right circular arrow — stays white always for contrast */}
@@ -120,6 +114,8 @@ export const PopularRoutes = () => {
             </div>
           </Link>
         ))}
+        {/* Trailing padding for horizontal scroll to prevent shadow clipping on the last item */}
+        <div className="w-1 shrink-0 md:hidden" />
       </div>
     </section>
   );
