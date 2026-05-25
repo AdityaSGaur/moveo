@@ -48,7 +48,7 @@ export default function CommunityPage() {
   }, { scope: containerRef });
 
   return (
-    <main className="min-h-screen bg-white text-black flex flex-col relative overflow-hidden">
+    <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)] flex flex-col relative overflow-hidden">
       <Navbar />
       
       {/* Custom Styles for Floating Animation */}
@@ -84,7 +84,7 @@ export default function CommunityPage() {
                       return (
                         <div key={j} className="gsap-wrapper relative w-full">
                           <div 
-                            className={`w-full ${avatar.aspect} ${floatClass} rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:scale-105 bg-gray-100 shrink-0 border border-black/5 cursor-pointer`}
+                            className={`w-full ${avatar.aspect} ${floatClass} rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:scale-105 bg-[var(--surface)] shrink-0 border border-[rgba(0,0,0,0.04)] cursor-pointer`}
                           >
                             <img 
                               src={avatar.src} 
@@ -105,19 +105,19 @@ export default function CommunityPage() {
           {/* Center Text Section Overlay - Positioned securely using responsive padding */}
           <div className="relative z-20 flex justify-center pointer-events-none pt-[55vw] md:pt-[32vw] xl:pt-[450px]">
             <div className="text-center max-w-3xl px-4 pointer-events-auto content-fade">
-              <div className="inline-flex items-center justify-center rounded-full px-5 py-1.5 text-xs font-bold uppercase tracking-widest bg-gray-100 text-gray-600 mb-6 shadow-sm border border-gray-200">
+              <div className="inline-flex items-center justify-center rounded-full px-5 py-1.5 text-xs font-bold uppercase tracking-widest bg-[var(--background)] text-[var(--text-secondary)] mb-6 shadow-sm border border-[rgba(0,0,0,0.04)]">
                 Testimonials
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-[4.5rem] leading-none font-display font-bold tracking-tight text-black mb-2">
+              <h1 className="text-4xl md:text-5xl lg:text-[4.5rem] leading-none font-display font-bold tracking-tight text-[var(--text-primary)] mb-2">
                 Trusted by leaders
               </h1>
-              <h2 className="text-4xl md:text-5xl lg:text-[4.5rem] leading-none font-display font-medium tracking-tight text-gray-400 mb-8">
+              <h2 className="text-4xl md:text-5xl lg:text-[4.5rem] leading-none font-display font-medium tracking-tight text-[var(--text-secondary)] mb-8">
                 from various industries
               </h2>
-              <p className="text-gray-600 text-base md:text-xl max-w-xl mx-auto mb-10">
+              <p className="text-[var(--text-tertiary)] text-base md:text-xl max-w-xl mx-auto mb-10">
                 Learn why professionals trust our solutions to complete their customer journeys.
               </p>
-              <Button className="rounded-full px-10 py-4 bg-black text-white hover:bg-gray-800 hover:scale-105 shadow-xl transition-all duration-300">
+              <Button className="rounded-full px-10 py-4 bg-[var(--accent-primary)] text-[var(--foreground)] hover:brightness-90 hover:scale-105 shadow-xl transition-all duration-300">
                 Read Success Stories &rarr;
               </Button>
             </div>
@@ -126,21 +126,21 @@ export default function CommunityPage() {
 
         {/* Bottom Testimonials Row */}
         <div className="max-w-7xl mx-auto w-full px-4 md:px-12 lg:px-24 mt-20 relative z-30">
-          <div className="grid md:grid-cols-3 gap-12 md:gap-8 w-full content-fade">
+            <div className="grid md:grid-cols-3 gap-12 md:gap-8 w-full content-fade">
             {TESTIMONIALS.map((testimonial) => (
-              <div key={testimonial.id} className="flex flex-col bg-gray-50/50 p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex gap-1 text-black mb-6">
+              <div key={testimonial.id} className="flex flex-col bg-[var(--surface-elevated)] p-8 rounded-3xl border border-[rgba(0,0,0,0.06)] shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex gap-1 text-[var(--text-primary)] mb-6">
                   {[...Array(5)].map((_, i) => (
                     <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                   ))}
                 </div>
-                <p className="text-gray-700 font-medium leading-relaxed mb-8 flex-1 text-sm md:text-base">
+                <p className="text-[var(--text-primary)] font-medium leading-relaxed mb-8 flex-1 text-sm md:text-base">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 shrink-0 border-2 border-white shadow-sm">
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-[var(--surface)] shrink-0 border-2 border-[rgba(0,0,0,0.06)] shadow-sm">
                     <img 
                       src={testimonial.image} 
                       alt={testimonial.name} 
@@ -149,8 +149,8 @@ export default function CommunityPage() {
                     />
                   </div>
                   <div>
-                    <h4 className="font-bold text-black">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
+                    <h4 className="font-bold text-[var(--text-primary)]">{testimonial.name}</h4>
+                    <p className="text-sm text-[var(--text-secondary)]">{testimonial.role}</p>
                   </div>
                 </div>
               </div>

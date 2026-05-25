@@ -252,7 +252,7 @@ export const FeaturedGrid = () => {
       <div className="mt-10 relative z-50 flex justify-center">
         <Link
           href="/movies"
-          className="flex items-center gap-2 px-6 py-3 rounded-full bg-surface border border-text-tertiary/10 hover:bg-text-primary hover:text-background transition-all duration-300 uppercase text-sm font-light tracking-wider group shadow-sm"
+          className="flex items-center gap-2 px-6 py-3 rounded-full bg-surface border border-[rgba(0,0,0,0.1)] hover:bg-[var(--text-primary)] hover:text-[var(--background)] transition-all duration-300 uppercase text-sm font-light tracking-wider group shadow-sm"
         >
           View All Movies
           <FiArrowRight size={16} strokeWidth={1} className="group-hover:translate-x-1 transition-transform duration-300" />
