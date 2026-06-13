@@ -32,7 +32,7 @@ interface BookingDetailsViewProps {
   onBack: () => void;
   recommendedOptions: any[];
   onSelectRecommended: (item: any) => void;
-  CardComponent: React.FC<{ [key: string]: any, onBook: (item: any) => void }>;
+  CardComponent: React.ComponentType<any>;
 }
 
 export const BookingDetailsView = ({ 
