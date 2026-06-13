@@ -58,7 +58,7 @@ export const PopularRoutes = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight text-text-primary">
             Popular Routes
           </h2>
-          <div className="h-px flex-1 bg-gradient-to-r from-text-tertiary/20 to-transparent hidden sm:block" />
+          <div className="h-px flex-1 bg-linear-to-r from-text-tertiary/20 to-transparent hidden sm:block" />
         </div>
         <Link
           href="/buses"

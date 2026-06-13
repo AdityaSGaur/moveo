@@ -15,7 +15,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   className = "",
   ...props
 }) => {
-  const baseClasses = "animate-[shimmer_2s_linear_infinite] bg-[length:400%_100%] bg-gradient-to-r from-surface via-surface-elevated to-surface";
+  const baseClasses = "animate-[shimmer_2s_linear_infinite] bg-[length:400%_100%] bg-linear-to-r from-surface via-surface-elevated to-surface";
 
   const getVariantClasses = () => {
     switch (variant) {

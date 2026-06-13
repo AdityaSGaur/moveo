@@ -407,7 +407,7 @@ export const SmartSearch = ({
 
                 {/* Row 3: Search Button */}
                 <div className="mt-1 md:mt-2">
-                  <Button onClick={handleSearch} size="lg" className="w-full h-[64px] bg-gradient-to-r from-accent-primary to-accent-secondary hover:brightness-110 text-background rounded-3xl text-lg font-bold border-none transition-all shadow-[0_8px_20px_rgba(var(--accent-primary),0.3)] hover:shadow-[0_12px_28px_rgba(var(--accent-primary),0.4)] hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                  <Button onClick={handleSearch} size="lg" className="w-full h-[64px] bg-linear-to-r from-accent-primary to-accent-secondary hover:brightness-110 text-background rounded-3xl text-lg font-bold border-none transition-all shadow-[0_8px_20px_rgba(var(--accent-primary),0.3)] hover:shadow-[0_12px_28px_rgba(var(--accent-primary),0.4)] hover:-translate-y-0.5 flex items-center justify-center gap-2">
                     <HugeiconsIcon icon={Airplane01Icon} size={22} className="hidden md:block" />
                     <span>Search Flights</span>
                   </Button>

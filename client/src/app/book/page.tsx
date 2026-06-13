@@ -144,8 +144,8 @@ function SuggestionIcon({ type }: { type: string }) {
 function FlightCard({ flight, onBook }: { flight: typeof ALL_FLIGHTS[0], onBook: (item: any) => void }) {
   return (
     <div onClick={() => onBook(flight)} className="group bg-surface-elevated rounded-2xl overflow-hidden border border-white/10 hover:border-white/25 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-      <div className="relative h-28 bg-gradient-to-br from-surface to-surface-elevated flex items-center justify-center px-6 border-b border-white/5 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent" />
+      <div className="relative h-28 bg-linear-to-br from-surface to-surface-elevated flex items-center justify-center px-6 border-b border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-r from-blue-500/5 to-transparent" />
         <div className="flex items-center gap-3 w-full relative z-10">
           <div className="text-left">
             <div className="text-xl font-bold font-mono leading-none">{flight.departure}</div>
@@ -196,8 +196,8 @@ function FlightCard({ flight, onBook }: { flight: typeof ALL_FLIGHTS[0], onBook:
 function BusCard({ bus, onBook }: { bus: typeof ALL_BUSES[0], onBook: (item: any) => void }) {
   return (
     <div onClick={() => onBook(bus)} className="group bg-surface-elevated rounded-2xl overflow-hidden border border-white/10 hover:border-white/25 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-      <div className="relative h-28 bg-gradient-to-br from-surface to-surface-elevated flex items-center justify-center px-6 border-b border-white/5 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-accent-primary/5 to-transparent" />
+      <div className="relative h-28 bg-linear-to-br from-surface to-surface-elevated flex items-center justify-center px-6 border-b border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-r from-accent-primary/5 to-transparent" />
         <div className="flex items-center gap-3 w-full relative z-10">
           <div className="text-left">
             <div className="text-xl font-bold font-mono leading-none">{bus.departure}</div>
@@ -249,8 +249,8 @@ function BusCard({ bus, onBook }: { bus: typeof ALL_BUSES[0], onBook: (item: any
 function TrainCard({ train, onBook }: { train: typeof ALL_TRAINS[0], onBook: (item: any) => void }) {
   return (
     <div onClick={() => onBook(train)} className="group bg-surface-elevated rounded-2xl overflow-hidden border border-white/10 hover:border-white/25 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-      <div className="relative h-28 bg-gradient-to-br from-surface to-surface-elevated flex items-center justify-center px-6 border-b border-white/5 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-transparent" />
+      <div className="relative h-28 bg-linear-to-br from-surface to-surface-elevated flex items-center justify-center px-6 border-b border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-r from-yellow-500/5 to-transparent" />
         <div className="flex items-center gap-3 w-full relative z-10">
           <div className="text-left">
             <div className="text-xl font-bold font-mono leading-none">{train.departure}</div>

@@ -77,9 +77,9 @@ export const BookingModal = ({ item, type, onClose }: BookingModalProps) => {
             <div className="flex-1 px-4 flex flex-col items-center">
               <span className="text-[10px] font-bold text-text-tertiary tracking-widest uppercase mb-2">{item.duration}</span>
               <div className="w-full flex items-center gap-2">
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                <div className="h-px flex-1 bg-linear-to-r from-transparent via-white/20 to-transparent" />
                 <div className="w-1.5 h-1.5 rounded-full bg-accent-primary ring-4 ring-accent-primary/20" />
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                <div className="h-px flex-1 bg-linear-to-r from-transparent via-white/20 to-transparent" />
               </div>
             </div>
             <div className="text-right w-1/3">

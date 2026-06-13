@@ -153,9 +153,9 @@ export const BookingDetailsView = ({
               <div className="flex-1 px-4 flex flex-col items-center">
                 <span className="text-xs font-bold text-text-tertiary tracking-widest uppercase mb-3">{item.duration}</span>
                 <div className="w-full flex items-center gap-2">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-accent-primary/50 to-accent-primary" />
+                  <div className="h-px flex-1 bg-linear-to-r from-transparent via-accent-primary/50 to-accent-primary" />
                   <div className="w-2.5 h-2.5 rounded-full bg-accent-primary ring-4 ring-accent-primary/20" />
-                  <div className="h-px flex-1 bg-gradient-to-r from-accent-primary via-accent-primary/50 to-transparent" />
+                  <div className="h-px flex-1 bg-linear-to-r from-accent-primary via-accent-primary/50 to-transparent" />
                 </div>
                 <span className="text-[10px] font-bold text-text-tertiary uppercase mt-2">
                   {item.stops || (type === "bus" ? "Direct" : "Non-stop")}
