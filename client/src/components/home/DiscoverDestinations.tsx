@@ -76,7 +76,7 @@ export const DiscoverDestinations = () => {
                 <h3 className="text-lg sm:text-xl font-bold font-display">{dest.name}</h3>
                 <p className="text-sm text-white/80">{dest.price}</p>
               </div>
-              <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="w-10 h-10 rounded-full bg-white/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <HugeiconsIcon icon={ArrowRight01Icon} size={20} className="text-white" />
               </div>
             </div>

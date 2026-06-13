@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -45,9 +46,11 @@ export const CTABanner = () => {
           <p className="text-text-secondary text-sm">
             We have been helping millions of users book their travel and entertainment seamlessly and fast in the first place.
           </p>
-          <Button variant="primary" className="rounded-full px-8">
-            Book Now &rarr;
-          </Button>
+          <Link href="/book">
+            <Button variant="primary" className="rounded-full px-8">
+              Book Now &rarr;
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

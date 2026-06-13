@@ -10,7 +10,7 @@ interface BookingState {
 const initialState: BookingState = {
   currentBooking: null,
   bookingHistory: [],
-  activeModule: "movie",
+  activeModule: "flight",
 };
 
 const bookingSlice = createSlice({

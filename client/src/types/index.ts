@@ -7,6 +7,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  emailVerified?: boolean;
   phone?: string;
   avatar?: string;
   city?: string;
@@ -19,107 +20,9 @@ export interface UserPreferences {
   theme: "dark" | "light";
   language: string;
   defaultTravelClass?: string;
-  preferredBookingTypes: ("movie" | "bus" | "train")[];
+  preferredBookingTypes: ("flight" | "bus" | "train")[];
 }
 
-// ---- Movie Types ----
-export interface Movie {
-  id: string;
-  slug: string;
-  title: string;
-  tagline?: string;
-  poster: string;
-  backdrop: string;
-  genres: string[];
-  language: string;
-  languages: string[];
-  duration: number; // in minutes
-  releaseDate: string;
-  certificate: string; // U, UA, A, S
-  rating: number;
-  ratingCount: number;
-  synopsis: string;
-  trailerUrl?: string;
-  cast: CastMember[];
-  crew: CrewMember[];
-  formats: string[]; // 2D, 3D, IMAX, 4DX
-  status: "now_showing" | "coming_soon";
-}
-
-export interface CastMember {
-  id: string;
-  name: string;
-  role: string;
-  character?: string;
-  avatar?: string;
-}
-
-export interface CrewMember {
-  id: string;
-  name: string;
-  role: string; // Director, Producer, etc.
-  avatar?: string;
-}
-
-export interface Theater {
-  id: string;
-  name: string;
-  address: string;
-  city: string;
-  area: string;
-  latitude?: number;
-  longitude?: number;
-  amenities: string[];
-  screens: Screen[];
-}
-
-export interface Screen {
-  id: string;
-  name: string;
-  format: string;
-  seatLayout: SeatLayout;
-}
-
-export interface SeatLayout {
-  rows: SeatRow[];
-  totalSeats: number;
-  categories: SeatCategory[];
-}
-
-export interface SeatRow {
-  label: string; // A, B, C...
-  seats: Seat[];
-}
-
-export interface Seat {
-  id: string;
-  number: number;
-  row: string;
-  category: string;
-  price: number;
-  status: "available" | "booked" | "selected" | "locked" | "blocked";
-  isAisle?: boolean;
-}
-
-export interface SeatCategory {
-  name: string; // Silver, Gold, Platinum
-  price: number;
-  color: string;
-}
-
-export interface Showtime {
-  id: string;
-  theaterId: string;
-  screenId: string;
-  movieId: string;
-  startTime: string;
-  endTime: string;
-  format: string;
-  price: number;
-  availableSeats: number;
-  totalSeats: number;
-  status: "available" | "filling_fast" | "almost_full" | "sold_out";
-}
 
 // ---- Bus Types ----
 export interface BusSearch {
@@ -238,7 +141,7 @@ export interface TrainStop {
 export interface Booking {
   id: string;
   userId: string;
-  type: "movie" | "bus" | "train";
+  type: "flight" | "bus" | "train";
   status: "confirmed" | "pending" | "cancelled" | "completed";
   totalAmount: number;
   discount?: number;
@@ -248,21 +151,22 @@ export interface Booking {
   transactionId?: string;
   createdAt: string;
   updatedAt: string;
-  movieBooking?: MovieBookingDetails;
+  flightBooking?: FlightBookingDetails;
   busBooking?: BusBookingDetails;
   trainBooking?: TrainBookingDetails;
 }
 
-export interface MovieBookingDetails {
-  movieId: string;
-  movieTitle: string;
-  moviePoster: string;
-  theaterId: string;
-  theaterName: string;
-  screenName: string;
-  showtime: string;
+export interface FlightBookingDetails {
+  flightId: string;
+  flightNumber: string;
+  airlineName: string;
+  airlineLogo: string;
+  source: string;
+  destination: string;
+  departureTime: string;
+  arrivalTime: string;
   seats: string[];
-  format: string;
+  class: string;
 }
 
 export interface BusBookingDetails {
@@ -300,6 +204,9 @@ export interface Passenger {
   idType?: string;
   idNumber?: string;
   seatNumber?: string;
+  phone?: string;
+  email?: string;
+  aadhar?: string;
 }
 
 // ---- Payment Types ----
@@ -346,7 +253,7 @@ export interface Offer {
   discountAmount?: number;
   minAmount?: number;
   maxDiscount?: number;
-  applicableModules: ("movie" | "bus" | "train")[];
+  applicableModules: ("flight" | "bus" | "train")[];
   validUntil: string;
   bannerImage?: string;
 }
@@ -370,11 +277,11 @@ export interface Pagination {
 }
 
 // ---- Component Prop Types ----
-export type ModuleType = "movie" | "bus" | "train";
+export type ModuleType = "flight" | "bus" | "train";
 
 export interface SearchSuggestion {
   id: string;
-  type: "city" | "station" | "movie" | "route";
+  type: "city" | "station" | "flight" | "route";
   label: string;
   sublabel?: string;
   icon?: string;

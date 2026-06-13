@@ -10,9 +10,10 @@ import { Sidebar } from "./Sidebar";
 import { ThemeToggle } from "./ThemeToggle";
 
 const MODULES = [
-  { id: "movies", label: "Movies", path: "/movies" },
+  { id: "flights", label: "Flights", path: "/flights" },
   { id: "buses", label: "Buses", path: "/buses" },
   { id: "trains", label: "Trains", path: "/trains" },
+  { id: "book", label: "Book", path: "/book" },
   { id: "community", label: "Community", path: "/community" },
 ];
 
@@ -42,7 +43,7 @@ export const Navbar = () => {
         <div
           className={`flex items-center justify-between mx-auto w-full min-w-0 transition-all duration-500 ${
             isScrolled
-              ? "max-w-7xl bg-background/90 backdrop-blur-xl border-b sm:border border-text-tertiary/20 rounded-none sm:rounded-full py-2 px-4 pr-0 sm:py-3 sm:pl-6 sm:pr-3 shadow-xl"
+              ? "max-w-7xl bg-background/95 border-b sm:border border-text-tertiary/20 rounded-none sm:rounded-full py-2 px-4 pr-0 sm:py-3 sm:pl-6 sm:pr-3 shadow-xl"
               : "max-w-7xl"
           }`}
         >

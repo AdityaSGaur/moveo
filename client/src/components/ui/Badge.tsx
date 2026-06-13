@@ -7,7 +7,7 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     | "warning"
     | "error"
     | "info"
-    | "movie"
+    | "flight"
     | "bus"
     | "train";
   size?: "sm" | "md";
@@ -28,7 +28,7 @@ export const Badge: React.FC<BadgeProps> = ({
     warning: "bg-warning/10 text-warning border border-warning/20",
     error: "bg-error/10 text-error border border-error/20",
     info: "bg-info/10 text-info border border-info/20",
-    movie: "bg-module-movie/10 text-module-movie border border-module-movie/20",
+    flight: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
     bus: "bg-module-bus/10 text-module-bus border border-module-bus/20",
     train: "bg-module-train/10 text-module-train border border-module-train/20",
   };
@@ -39,7 +39,7 @@ export const Badge: React.FC<BadgeProps> = ({
     warning: "bg-warning",
     error: "bg-error",
     info: "bg-info",
-    movie: "bg-module-movie",
+    flight: "bg-blue-500",
     bus: "bg-module-bus",
     train: "bg-module-train",
   };

@@ -6,7 +6,7 @@ export const siteConfig = {
   name: "Moveo",
   tagline: "Book. Ride. Watch. Repeat.",
   description:
-    "Your all-in-one ticket booking platform for movies, buses, and trains.",
+    "Your all-in-one ticket booking platform for flights, buses, and trains.",
   url: "https://moveo.app",
   ogImage: "/images/og-image.png",
 
@@ -29,7 +29,7 @@ export const siteConfig = {
 };
 
 export const navLinks = [
-  { href: "/movies", label: "Movies", icon: "🎬", module: "movie" as const },
+  { href: "/flights", label: "Flights", icon: "✈️", module: "flight" as const },
   { href: "/buses", label: "Buses", icon: "🚌", module: "bus" as const },
   { href: "/trains", label: "Trains", icon: "🚆", module: "train" as const },
 ];
@@ -43,7 +43,7 @@ export const footerLinks = {
     { href: "/partners", label: "Partners" },
   ],
   services: [
-    { href: "/movies", label: "Movies" },
+    { href: "/flights", label: "Flights" },
     { href: "/buses", label: "Bus Booking" },
     { href: "/trains", label: "Train Booking" },
     { href: "/offers", label: "Offers" },
@@ -75,36 +75,6 @@ export const cities = [
   "Bhopal",
   "Goa",
 ];
-
-export const movieGenres = [
-  "Action",
-  "Comedy",
-  "Drama",
-  "Thriller",
-  "Horror",
-  "Romance",
-  "Sci-Fi",
-  "Animation",
-  "Documentary",
-  "Adventure",
-  "Fantasy",
-  "Mystery",
-];
-
-export const movieLanguages = [
-  "Hindi",
-  "English",
-  "Telugu",
-  "Tamil",
-  "Kannada",
-  "Malayalam",
-  "Bengali",
-  "Marathi",
-  "Gujarati",
-  "Punjabi",
-];
-
-export const movieFormats = ["2D", "3D", "IMAX", "4DX", "IMAX 3D", "Dolby Atmos"];
 
 export const trainClasses = [
   { code: "SL", name: "Sleeper" },
@@ -140,7 +110,7 @@ export const busAmenities = [
   { id: "wifi", label: "WiFi", icon: "📶" },
   { id: "water", label: "Water Bottle", icon: "💧" },
   { id: "blanket", label: "Blanket", icon: "🛏️" },
-  { id: "entertainment", label: "Entertainment", icon: "🎬" },
+  { id: "entertainment", label: "Entertainment", icon: "📺" },
   { id: "snacks", label: "Snacks", icon: "🍿" },
   { id: "reading_light", label: "Reading Light", icon: "💡" },
   { id: "ac", label: "Air Conditioned", icon: "❄️" },

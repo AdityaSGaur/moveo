@@ -52,7 +52,7 @@ export const TestimonialBlock = () => {
             &ldquo;
           </div>
           <p className="text-xl md:text-2xl font-medium text-text-primary leading-relaxed relative z-10 pl-6">
-            Moveo completely changed how I book my weekend getaways. The interface is buttery smooth, and I can book a movie and my return bus ticket in less than a minute. It's powerful, fast, and simply beautiful to use.
+            Moveo completely changed how I book my weekend getaways. The interface is buttery smooth, and I can book a flight and my return bus ticket in less than a minute. It's powerful, fast, and simply beautiful to use.
           </p>
           <div className="absolute bottom-8 right-0 text-6xl text-text-tertiary/30 font-display font-bold leading-none rotate-180">
             &ldquo;

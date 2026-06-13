@@ -1,8 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { SmartSearch } from "@/components/home/SmartSearch";
-import { FeaturedGrid } from "@/components/home/FeaturedGrid";
+
 import { PopularRoutes } from "@/components/home/PopularRoutes";
-import { LiveShowtimes } from "@/components/home/LiveShowtimes";
 import { RecommendedSection } from "@/components/home/RecommendedSection";
 import { CommunitySection } from "@/components/home/CommunitySection";
 import { PartnersSection } from "@/components/home/PartnersSection";
@@ -25,10 +24,9 @@ export default function Home() {
 
 
 
-      <FeaturedGrid />
+
       <PopularRoutes />
       <DiscoverDestinations />
-      <LiveShowtimes />
       <RecommendedSection />
       
       <CommunitySection />

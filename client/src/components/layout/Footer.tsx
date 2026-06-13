@@ -7,11 +7,10 @@ import { siteConfig } from "@/config/site";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 const FOOTER_NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Movies", href: "/movies" },
+  { label: "Flights", href: "/flights" },
   { label: "Buses", href: "/buses" },
   { label: "Trains", href: "/trains" },
   { label: "Community", href: "/community" },
@@ -19,17 +18,15 @@ const FOOTER_NAV_LINKS = [
 
 export const Footer = () => {
   const containerRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
   const path1Ref = useRef<SVGPathElement>(null);
-  const dot1Ref = useRef<SVGCircleElement>(null);
   const pathname = usePathname();
 
   const visibleNavLinks = FOOTER_NAV_LINKS.filter((link) => pathname !== link.href);
 
   useGSAP(() => {
-    gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Fade in text elements
+    // Fade in text elements — plays once
     gsap.from(".footer-item", {
       y: 50,
       opacity: 0,
@@ -43,20 +40,10 @@ export const Footer = () => {
       force3D: true
     });
 
-    // Floating animation for MOVEO text logo
-    gsap.to(textRef.current, {
-      y: -15,
-      duration: 3,
-      yoyo: true,
-      repeat: -1,
-      ease: "sine.inOut"
-    });
-
-    // SVG Line drawing animation
+    // SVG Line drawing animation — plays once
     if (path1Ref.current) {
       const length = path1Ref.current.getTotalLength();
       gsap.set(path1Ref.current, { strokeDasharray: length, strokeDashoffset: length });
-      if (dot1Ref.current) gsap.set(dot1Ref.current, { opacity: 0 });
 
       gsap.to(path1Ref.current, {
         strokeDashoffset: 0,
@@ -66,22 +53,6 @@ export const Footer = () => {
           trigger: containerRef.current,
           start: "top 60%",
         },
-        onComplete: () => {
-          if (dot1Ref.current && path1Ref.current) {
-            gsap.to(dot1Ref.current, { opacity: 1, duration: 0.5 });
-            gsap.to(dot1Ref.current, {
-              motionPath: {
-                path: path1Ref.current,
-                align: path1Ref.current,
-                alignOrigin: [0.5, 0.5],
-              },
-              duration: 15,
-              repeat: -1,
-              yoyo: true,
-              ease: "sine.inOut"
-            });
-          }
-        }
       });
     }
   }, { scope: containerRef });
@@ -98,14 +69,13 @@ export const Footer = () => {
           strokeWidth="1.5" 
           fill="none" 
         />
-        <circle ref={dot1Ref} r="4" className="fill-text-primary drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
       </svg>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-12 lg:px-24 flex flex-col gap-12 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
         
         {/* Logo Branding */}
         <div className="flex flex-col gap-6 w-full lg:w-auto">
-          <h2 ref={textRef} className="font-display font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter text-text-primary uppercase mb-2 wrap-break-word">
+          <h2 className="font-display font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter text-text-primary uppercase mb-2 wrap-break-word">
             MOVEO
           </h2>
           <div className="font-display font-medium text-xs md:text-sm tracking-widest uppercase text-text-tertiary footer-item">

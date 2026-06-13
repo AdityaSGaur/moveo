@@ -14,7 +14,7 @@ interface SidebarProps {
 
 // Sync with Navbar MODULES
 const NAV_LINKS = [
-  { label: "Movies", href: "/movies" },
+  { label: "Flights", href: "/flights" },
   { label: "Buses", href: "/buses" },
   { label: "Trains", href: "/trains" },
   { label: "Community", href: "/community" },

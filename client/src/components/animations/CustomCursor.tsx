@@ -24,6 +24,10 @@ export const CustomCursor = () => {
 
     let isVisible = false;
 
+    // Use quickTo for the follower ring — reuses a single tween (no garbage)
+    const setFollowerX = gsap.quickTo(follower, "x", { duration: 0.5, ease: "power3.out" });
+    const setFollowerY = gsap.quickTo(follower, "y", { duration: 0.5, ease: "power3.out" });
+
     const onMouseMove = (e: MouseEvent) => {
       if (!isVisible) {
         isVisible = true;
@@ -34,13 +38,9 @@ export const CustomCursor = () => {
       setCursorX(e.clientX);
       setCursorY(e.clientY);
 
-      // Smooth follow for the ring
-      gsap.to(follower, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.5,
-        ease: "power3.out"
-      });
+      // Smooth follow for the ring — quickTo reuses the same tween
+      setFollowerX(e.clientX);
+      setFollowerY(e.clientY);
     };
 
     const onMouseEnter = () => {

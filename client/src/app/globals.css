@@ -77,9 +77,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Cursor overrides */
-*, html, body {
-  cursor: none !important;
+/* Custom Cursor overrides — desktop only */
+@media (min-width: 769px) {
+  *, html, body {
+    cursor: none !important;
+  }
 }
 
 h1, h2, h3, h4, h5, h6, .font-display {

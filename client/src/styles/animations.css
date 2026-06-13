@@ -97,3 +97,13 @@
     transform: scale(1.05);
   }
 }
+
+/* Price change pulse used when applying coupon or updating totals */
+@keyframes price-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  40% { transform: scale(1.05); opacity: 0.95; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.price-anim {
+  animation: price-pulse 600ms ease-in-out;
+}

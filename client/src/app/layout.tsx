@@ -45,13 +45,13 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Moveo — Book Movie, Bus & Train Tickets Online",
+    default: "Moveo — Book Flight, Bus & Train Tickets Online",
     template: "%s | Moveo",
   },
   description:
-    "Your all-in-one ticket booking platform. Book movie tickets, bus tickets, and train tickets with AI-powered recommendations, real-time seat selection, and the best deals.",
+    "Your all-in-one ticket booking platform. Book flight tickets, bus tickets, and train tickets with AI-powered recommendations, real-time seat selection, and the best deals.",
   keywords: [
-    "movie tickets",
+    "flight tickets",
     "bus booking",
     "train booking",
     "ticket booking",
@@ -67,15 +67,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: "Moveo",
-    title: "Moveo — Book Movie, Bus & Train Tickets Online",
+    title: "Moveo — Book Flight, Bus & Train Tickets Online",
     description:
-      "Your all-in-one ticket booking platform. Book movie tickets, bus tickets, and train tickets.",
+      "Your all-in-one ticket booking platform. Book flight tickets, bus tickets, and train tickets.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Moveo — Book Movie, Bus & Train Tickets Online",
+    title: "Moveo — Book Flight, Bus & Train Tickets Online",
     description:
-      "Your all-in-one ticket booking platform for movies, buses, and trains.",
+      "Your all-in-one ticket booking platform for flights, buses, and trains.",
   },
   robots: {
     index: true,

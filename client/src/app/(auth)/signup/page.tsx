@@ -21,7 +21,7 @@ export default function SignupPage() {
           <p className="text-text-secondary mt-2 text-xs md:text-sm">Join us and start booking your journeys today.</p>
         </div>
 
-        <form className="space-y-5 md:space-y-6">
+        <form className="space-y-5 md:space-y-6" autoComplete="off">
           <div className="space-y-2">
             <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest">Full Name</label>
             <input 
@@ -35,6 +35,7 @@ export default function SignupPage() {
             <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest">Email</label>
             <input 
               type="email" 
+              autoComplete="off"
               placeholder="Enter your email" 
               className="w-full bg-surface-elevated border border-text-tertiary/20 rounded-xl px-4 py-3 text-sm md:text-base text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
             />
@@ -45,6 +46,7 @@ export default function SignupPage() {
             <div className="relative">
               <input 
                 type={showPassword ? "text" : "password"} 
+                autoComplete="new-password"
                 placeholder="Create a strong password" 
                 className="w-full bg-surface-elevated border border-text-tertiary/20 rounded-xl px-4 py-3 pr-12 text-sm md:text-base text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
               />

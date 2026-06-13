@@ -11,7 +11,7 @@ const FAQS = [
   { id: 1, question: "How do I find the best deal on Moveo?", answer: "Our AI-powered engine constantly scans for the best deals across all our partners. Just enter your destination and dates, and we'll highlight the most cost-effective and premium options.", image: "/images/grid-4.jpg" },
   { id: 2, question: "Is there a flexible cancellation policy?", answer: "Yes, many of our bookings offer free cancellation up to 24 hours before your trip or event. Always check the specific policy mentioned on the booking page.", image: "/images/grid-5.jpg" },
   { id: 3, question: "Can I book for a large group?", answer: "Absolutely. Our Group Booking feature allows you to seamlessly reserve multiple seats or rooms, split payments, and invite friends to collaborate on the itinerary.", image: "/images/grid-1.jpg" },
-  { id: 4, question: "What is the Moveo rewards program?", answer: "Earn points on every movie ticket, bus ride, or hotel stay. Redeem these points for exclusive discounts, free upgrades, and VIP experiences.", image: "/images/grid-2.jpg" },
+  { id: 4, question: "What is the Moveo rewards program?", answer: "Earn points on every flight ticket, bus ride, or hotel stay. Redeem these points for exclusive discounts, free upgrades, and VIP experiences.", image: "/images/grid-2.jpg" },
 ];
 
 export const FAQSection = () => {

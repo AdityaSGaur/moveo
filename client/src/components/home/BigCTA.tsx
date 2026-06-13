@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -59,16 +60,16 @@ export const BigCTA = () => {
           />
 
           <div className="p-1.5 border border-dashed border-text-tertiary/50 rounded-full">
-            <button className="px-10 py-5 text-[15px] font-bold tracking-widest uppercase bg-accent-primary hover:bg-accent-primary/90 text-background rounded-full transition-colors shadow-sm">
+            <Link href="/book" className="block px-10 py-5 text-[15px] font-bold tracking-widest uppercase bg-accent-primary hover:bg-accent-primary/90 text-background rounded-full transition-colors shadow-sm">
               Book Your Experience
-            </button>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Massive overlapping text at the bottom */}
       <div className="cta-text w-full flex justify-center translate-y-1/4">
-        <h1 className="text-[15vw] leading-none font-display font-black tracking-tighter text-text-primary/5 select-none drop-shadow-2xl">
+        <h1 className="text-[15vw] leading-none font-display font-black tracking-tighter text-text-primary/5 select-none">
           MOVEO
         </h1>
       </div>

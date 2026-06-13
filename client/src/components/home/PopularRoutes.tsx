@@ -90,7 +90,7 @@ export const PopularRoutes = () => {
             </div>
 
             {/* Top-right circular arrow — stays white always for contrast */}
-            <div className="absolute top-4 right-4 z-20 w-9 h-9 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-md text-black transition-all duration-300 group-hover:bg-white group-hover:scale-110">
+            <div className="absolute top-4 right-4 z-20 w-9 h-9 bg-white/95 rounded-full flex items-center justify-center shadow-md text-black transition-all duration-300 group-hover:bg-white group-hover:scale-110">
               <HugeiconsIcon icon={ArrowRight01Icon} size={15} className="-rotate-45" />
             </div>
 
