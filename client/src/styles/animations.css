@@ -1,6 +1,4 @@
-/* ============================================
-   Moveo — CSS Animations
-   ============================================ */
+/* CSS Animations */
 
 @keyframes shimmer {
   0% {
@@ -76,7 +74,7 @@
     transform: translateX(0%);
   }
   100% {
-    transform: translateX(-50%); /* Assumes content is duplicated */
+    transform: translateX(-50%);
   }
 }
 

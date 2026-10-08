@@ -1,17 +1,216 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  AlertCircleIcon,
+  CheckmarkCircle02Icon,
+  ViewIcon,
+  ViewOffIcon,
+  Mail01Icon,
+  LockPasswordIcon,
+  UserIcon,
+  Loading03Icon,
+} from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/Button";
+import { useAppDispatch } from "@/store/store";
+import { setUser } from "@/store/slices/authSlice";
+
+type FieldName = "name" | "email" | "password";
+
+interface FormState {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface ValidationErrors {
+  name?: string;
+  email?: string;
+  password?: string;
+}
 
 export default function SignupPage() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState<FormState>({ name: "", email: "", password: "" });
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [touched, setTouched] = useState<{ name?: boolean; email?: boolean; password?: boolean }>({});
+  const [validating, setValidating] = useState<{ name?: boolean; email?: boolean; password?: boolean }>({});
+  const [corrected, setCorrected] = useState<{ name?: boolean; email?: boolean; password?: boolean }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  // References for field debounce timers (500ms delay after typing pauses)
+  const debounceTimers = useRef<{ [key in FieldName]?: NodeJS.Timeout }>({});
+
+  useEffect(() => {
+    return () => {
+      // Clear timers on component unmount
+      Object.values(debounceTimers.current).forEach((timer) => {
+        if (timer) clearTimeout(timer);
+      });
+    };
+  }, []);
+
+  // Validation Rules
+  const validateField = (name: FieldName, value: string): string => {
+    if (name === "name") {
+      const trimmed = value.trim();
+      if (!trimmed) return "Full Name is required";
+      if (trimmed.length < 2) return "Name must be at least 2 characters long";
+      return "";
+    }
+
+    if (name === "email") {
+      const trimmed = value.trim();
+      if (!trimmed) return "Email address is required";
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmed)) return "Please enter a valid email address (e.g. user@example.com)";
+      return "";
+    }
+
+    if (name === "password") {
+      if (!value) return "Password is required";
+      if (value.length < 6) return "Password must be at least 6 characters long";
+      return "";
+    }
+
+    return "";
+  };
+
+  const handleInputChange = (fieldName: FieldName, value: string) => {
+    setFormData((prev) => ({ ...prev, [fieldName]: value }));
+
+    // Mark field as touched
+    if (!touched[fieldName]) {
+      setTouched((prev) => ({ ...prev, [fieldName]: true }));
+    }
+
+    // Check if an error is currently displayed for this field
+    const hasCurrentError = Boolean(errors[fieldName]);
+
+    if (hasCurrentError) {
+      // INSTANT ERROR CORRECTION:
+      // Test the newly typed value immediately against validation rules.
+      const immediateErr = validateField(fieldName, value);
+
+      if (!immediateErr) {
+        // If the new value is valid, IMMEDIATELY clear the error without waiting!
+        if (debounceTimers.current[fieldName]) {
+          clearTimeout(debounceTimers.current[fieldName]);
+        }
+        setErrors((prev) => ({ ...prev, [fieldName]: undefined }));
+        setValidating((prev) => ({ ...prev, [fieldName]: false }));
+
+        // Trigger brief visual feedback indicator for instant correction
+        setCorrected((prev) => ({ ...prev, [fieldName]: true }));
+        setTimeout(() => {
+          setCorrected((prev) => ({ ...prev, [fieldName]: false }));
+        }, 1800);
+        return;
+      }
+    }
+
+    // DEBOUNCED LIVE VALIDATION (When no error is displayed or input is still invalid):
+    // Wait ~500ms after user stops typing before displaying an error message
+    setValidating((prev) => ({ ...prev, [fieldName]: true }));
+
+    if (debounceTimers.current[fieldName]) {
+      clearTimeout(debounceTimers.current[fieldName]);
+    }
+
+    debounceTimers.current[fieldName] = setTimeout(() => {
+      const err = validateField(fieldName, value);
+      setErrors((prev) => ({ ...prev, [fieldName]: err || undefined }));
+      setValidating((prev) => ({ ...prev, [fieldName]: false }));
+    }, 500);
+  };
+
+  const handleBlur = (fieldName: FieldName) => {
+    setTouched((prev) => ({ ...prev, [fieldName]: true }));
+
+    // Clear debounce timer and validate immediately on blur
+    if (debounceTimers.current[fieldName]) {
+      clearTimeout(debounceTimers.current[fieldName]);
+    }
+
+    const err = validateField(fieldName, formData[fieldName]);
+    setErrors((prev) => ({ ...prev, [fieldName]: err || undefined }));
+    setValidating((prev) => ({ ...prev, [fieldName]: false }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Clear any pending debounce timers
+    Object.values(debounceTimers.current).forEach((timer) => {
+      if (timer) clearTimeout(timer);
+    });
+
+    // Mark all as touched
+    setTouched({ name: true, email: true, password: true });
+
+    // Validate all fields immediately
+    const nameErr = validateField("name", formData.name);
+    const emailErr = validateField("email", formData.email);
+    const passwordErr = validateField("password", formData.password);
+
+    const newErrors: ValidationErrors = {};
+    if (nameErr) newErrors.name = nameErr;
+    if (emailErr) newErrors.email = emailErr;
+    if (passwordErr) newErrors.password = passwordErr;
+
+    setErrors(newErrors);
+    setValidating({ name: false, email: false, password: false });
+
+    if (nameErr || emailErr || passwordErr) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setTimeout(() => {
+      dispatch(
+        setUser({
+          id: `usr_${Date.now().toString(36)}`,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          membershipTier: "silver",
+          createdAt: new Date().toISOString(),
+        })
+      );
+
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+      setTimeout(() => {
+        router.push("/");
+      }, 800);
+    }, 1000);
+  };
+
+  // Field status styling logic
+  const getFieldInputStyle = (fieldName: FieldName) => {
+    const isTouched = touched[fieldName];
+    const hasError = isTouched && errors[fieldName];
+    const isValid = isTouched && !errors[fieldName] && !validating[fieldName] && formData[fieldName].trim().length > 0;
+
+    if (hasError) {
+      return "bg-red-500/5 border-red-500/80 text-text-primary focus:border-red-500 focus:ring-2 focus:ring-red-500/20";
+    }
+    if (isValid) {
+      return "bg-emerald-500/5 border-emerald-500/60 text-text-primary focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20";
+    }
+    return "bg-surface-elevated border-text-tertiary/20 text-text-primary focus:border-text-primary";
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center px-4 relative overflow-hidden py-12">
       {/* Abstract Background element */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-accent-primary/5 rounded-full blur-[100px] pointer-events-none" />
-      
+
       <div className="w-full max-w-md relative z-10">
         <div className="mb-8 md:mb-10 text-center">
           <Link href="/" className="inline-block mb-6 md:mb-8">
@@ -21,47 +220,208 @@ export default function SignupPage() {
           <p className="text-text-secondary mt-2 text-xs md:text-sm">Join us and start booking your journeys today.</p>
         </div>
 
-        <form className="space-y-5 md:space-y-6" autoComplete="off">
-          <div className="space-y-2">
-            <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest">Full Name</label>
-            <input 
-              type="text" 
-              placeholder="Enter your name" 
-              className="w-full bg-surface-elevated border border-text-tertiary/20 rounded-xl px-4 py-3 text-sm md:text-base text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
-            />
+        {submitSuccess && (
+          <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-3 text-emerald-400 text-sm animate-in fade-in slide-in-from-top-2 duration-300">
+            <HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 flex-shrink-0" />
+            <span>Account created successfully! Redirecting to Sign In...</span>
           </div>
+        )}
 
+        <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6" noValidate autoComplete="off">
+          {/* NAME FIELD */}
           <div className="space-y-2">
-            <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest">Email</label>
-            <input 
-              type="email" 
-              autoComplete="off"
-              placeholder="Enter your email" 
-              className="w-full bg-surface-elevated border border-text-tertiary/20 rounded-xl px-4 py-3 text-sm md:text-base text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest">Password</label>
-            <div className="relative">
-              <input 
-                type={showPassword ? "text" : "password"} 
-                autoComplete="new-password"
-                placeholder="Create a strong password" 
-                className="w-full bg-surface-elevated border border-text-tertiary/20 rounded-xl px-4 py-3 pr-12 text-sm md:text-base text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary hover:text-text-primary transition-colors text-xs font-medium uppercase tracking-widest"
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
+            <div className="flex justify-between items-center">
+              <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest flex items-center gap-1.5">
+                <HugeiconsIcon icon={UserIcon} className="w-3.5 h-3.5 text-text-tertiary" />
+                Full Name
+              </label>
+
+              {/* Status Indicator */}
+              <div className="text-[11px] font-medium transition-all duration-300">
+                {validating.name && (
+                  <span className="text-text-tertiary flex items-center gap-1">
+                    <HugeiconsIcon icon={Loading03Icon} className="w-3 h-3 animate-spin text-accent-primary" />
+                    Checking...
+                  </span>
+                )}
+                {corrected.name && (
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1 animate-pulse">
+                    <HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-3.5 h-3.5" />
+                    Error corrected!
+                  </span>
+                )}
+              </div>
             </div>
+
+            <div className="relative">
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+                onBlur={() => handleBlur("name")}
+                placeholder="Enter your full name"
+                className={`w-full rounded-xl px-4 py-3 text-sm md:text-base placeholder:text-text-tertiary focus:outline-none transition-all duration-200 ${getFieldInputStyle(
+                  "name"
+                )}`}
+              />
+
+              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+                {touched.name && !validating.name && (
+                  errors.name ? (
+                    <HugeiconsIcon icon={AlertCircleIcon} className="w-5 h-5 text-red-500 animate-in zoom-in-50 duration-200" />
+                  ) : (
+                    formData.name.trim() && (
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-emerald-500 animate-in zoom-in-50 duration-200" />
+                    )
+                  )
+                )}
+              </div>
+            </div>
+
+            {touched.name && errors.name && (
+              <div className="flex items-center gap-1.5 text-xs text-red-400 pt-0.5 animate-in fade-in slide-in-from-top-1 duration-200">
+                <HugeiconsIcon icon={AlertCircleIcon} className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{errors.name}</span>
+              </div>
+            )}
           </div>
 
-          <Button fullWidth className="py-4 mt-8">
-            Sign Up
+          {/* EMAIL FIELD */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest flex items-center gap-1.5">
+                <HugeiconsIcon icon={Mail01Icon} className="w-3.5 h-3.5 text-text-tertiary" />
+                Email
+              </label>
+
+              {/* Status Indicator */}
+              <div className="text-[11px] font-medium transition-all duration-300">
+                {validating.email && (
+                  <span className="text-text-tertiary flex items-center gap-1">
+                    <HugeiconsIcon icon={Loading03Icon} className="w-3 h-3 animate-spin text-accent-primary" />
+                    Checking...
+                  </span>
+                )}
+                {corrected.email && (
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1 animate-pulse">
+                    <HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-3.5 h-3.5" />
+                    Error corrected!
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="relative">
+              <input
+                type="email"
+                autoComplete="off"
+                value={formData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                onBlur={() => handleBlur("email")}
+                placeholder="Enter your email"
+                className={`w-full rounded-xl px-4 py-3 text-sm md:text-base placeholder:text-text-tertiary focus:outline-none transition-all duration-200 ${getFieldInputStyle(
+                  "email"
+                )}`}
+              />
+
+              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+                {touched.email && !validating.email && (
+                  errors.email ? (
+                    <HugeiconsIcon icon={AlertCircleIcon} className="w-5 h-5 text-red-500 animate-in zoom-in-50 duration-200" />
+                  ) : (
+                    formData.email.trim() && (
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-emerald-500 animate-in zoom-in-50 duration-200" />
+                    )
+                  )
+                )}
+              </div>
+            </div>
+
+            {touched.email && errors.email && (
+              <div className="flex items-center gap-1.5 text-xs text-red-400 pt-0.5 animate-in fade-in slide-in-from-top-1 duration-200">
+                <HugeiconsIcon icon={AlertCircleIcon} className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{errors.email}</span>
+              </div>
+            )}
+          </div>
+
+          {/* PASSWORD FIELD */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label className="text-[10px] md:text-xs font-medium text-text-secondary uppercase tracking-widest flex items-center gap-1.5">
+                <HugeiconsIcon icon={LockPasswordIcon} className="w-3.5 h-3.5 text-text-tertiary" />
+                Password
+              </label>
+
+              {/* Status Indicator */}
+              <div className="text-[11px] font-medium transition-all duration-300">
+                {validating.password && (
+                  <span className="text-text-tertiary flex items-center gap-1">
+                    <HugeiconsIcon icon={Loading03Icon} className="w-3 h-3 animate-spin text-accent-primary" />
+                    Checking...
+                  </span>
+                )}
+                {corrected.password && (
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1 animate-pulse">
+                    <HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-3.5 h-3.5" />
+                    Error corrected!
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                value={formData.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                onBlur={() => handleBlur("password")}
+                placeholder="Create a strong password"
+                className={`w-full rounded-xl px-4 py-3 pr-24 text-sm md:text-base placeholder:text-text-tertiary focus:outline-none transition-all duration-200 ${getFieldInputStyle(
+                  "password"
+                )}`}
+              />
+
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                {touched.password && !validating.password && (
+                  errors.password ? (
+                    <HugeiconsIcon icon={AlertCircleIcon} className="w-5 h-5 text-red-500 animate-in zoom-in-50 duration-200" />
+                  ) : (
+                    formData.password && (
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-emerald-500 animate-in zoom-in-50 duration-200" />
+                    )
+                  )
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-text-tertiary hover:text-text-primary transition-colors p-1"
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  <HugeiconsIcon icon={showPassword ? ViewOffIcon : ViewIcon} className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {touched.password && errors.password && (
+              <div className="flex items-center gap-1.5 text-xs text-red-400 pt-0.5 animate-in fade-in slide-in-from-top-1 duration-200">
+                <HugeiconsIcon icon={AlertCircleIcon} className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{errors.password}</span>
+              </div>
+            )}
+          </div>
+
+          <Button type="submit" fullWidth className="py-4 mt-8" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 animate-spin" />
+                Creating Account...
+              </span>
+            ) : (
+              "Sign Up"
+            )}
           </Button>
 
           <div className="relative flex items-center py-4">
@@ -70,7 +430,7 @@ export default function SignupPage() {
             <div className="flex-grow border-t border-text-tertiary/20"></div>
           </div>
 
-          <button 
+          <button
             type="button"
             className="w-full flex items-center justify-center gap-3 bg-surface-elevated border border-text-tertiary/20 rounded-xl px-4 py-4 text-text-primary hover:bg-surface transition-colors duration-300 shadow-lg"
           >
@@ -91,3 +451,4 @@ export default function SignupPage() {
     </div>
   );
 }
+

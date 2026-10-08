@@ -61,14 +61,31 @@ export const createScrollFadeIn = (element: HTMLElement | null, options: any = {
  */
 export const createMarquee = (container: HTMLElement | null, options: any = {}) => {
   if (!container) return;
-  const { duration = 20, direction = -1 } = options;
+  const { duration = 30, direction = -1 } = options;
   
-  return gsap.to(container, {
-    xPercent: direction * 50,
-    ease: "none",
-    duration,
-    repeat: -1,
-  });
+  if (direction === -1) {
+    return gsap.fromTo(
+      container,
+      { xPercent: 0 },
+      {
+        xPercent: -50,
+        ease: "none",
+        duration,
+        repeat: -1,
+      }
+    );
+  } else {
+    return gsap.fromTo(
+      container,
+      { xPercent: -50 },
+      {
+        xPercent: 0,
+        ease: "none",
+        duration,
+        repeat: -1,
+      }
+    );
+  }
 };
 
 /**

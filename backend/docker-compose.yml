@@ -1,0 +1,209 @@
+version: '3.8'
+
+services:
+  # --- Infrastructure ---
+  postgres:
+    image: postgres:16-alpine
+    container_name: moveo-postgres
+    environment:
+      POSTGRES_USER: moveo
+      POSTGRES_PASSWORD: moveo
+      POSTGRES_DB: moveo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moveo"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: moveo-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: moveo-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: moveo-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: moveo-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: moveo-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  # --- Gateway ---
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: moveo-gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - postgres
+
+  # --- Microservices ---
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth/Dockerfile
+    container_name: moveo-auth-service
+    ports:
+      - "8001:8001"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: services/inventory/Dockerfile
+    container_name: moveo-inventory-service
+    ports:
+      - "8002:8002"
+    depends_on:
+      - postgres
+      - redis
+
+  search-service:
+    build:
+      context: .
+      dockerfile: services/search/Dockerfile
+    container_name: moveo-search-service
+    ports:
+      - "8003:8003"
+    depends_on:
+      - elasticsearch
+      - kafka
+
+  booking-service:
+    build:
+      context: .
+      dockerfile: services/booking/Dockerfile
+    container_name: moveo-booking-service
+    ports:
+      - "8004:8004"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: services/payment/Dockerfile
+    container_name: moveo-payment-service
+    ports:
+      - "8005:8005"
+    depends_on:
+      - postgres
+      - kafka
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification/Dockerfile
+    container_name: moveo-notification-service
+    ports:
+      - "8006:8006"
+    depends_on:
+      - postgres
+      - kafka
+
+  review-service:
+    build:
+      context: .
+      dockerfile: services/review/Dockerfile
+    container_name: moveo-review-service
+    ports:
+      - "8007:8007"
+    depends_on:
+      - postgres
+
+  loyalty-service:
+    build:
+      context: .
+      dockerfile: services/loyalty/Dockerfile
+    container_name: moveo-loyalty-service
+    ports:
+      - "8008:8008"
+    depends_on:
+      - postgres
+      - kafka
+
+  recommendation-service:
+    build:
+      context: .
+      dockerfile: services/recommendation/Dockerfile
+    container_name: moveo-recommendation-service
+    ports:
+      - "8009:8009"
+    depends_on:
+      - redis
+
+  admin-service:
+    build:
+      context: .
+      dockerfile: services/admin/Dockerfile
+    container_name: moveo-admin-service
+    ports:
+      - "8010:8010"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  redis_data:
+  es_data:

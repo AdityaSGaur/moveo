@@ -79,7 +79,7 @@ export const Annotation = ({
         // Fade in arrow head
         const head = arrowRef.current.querySelector("polygon, polyline");
         if (head) {
-          gsap.fromTo(head, { opacity: 0 }, { opacity: 1, duration: 0.4 }, "-=0.2");
+          tl.fromTo(head, { opacity: 0 }, { opacity: 1, duration: 0.4 }, "-=0.2");
         }
       }
     }
