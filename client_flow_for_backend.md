@@ -9,23 +9,23 @@ This document provides a comprehensive overview of the **Moveo** client-side app
 *   **Framework:** Next.js (App Router, `src/app`)
 *   **State Management:** Redux Toolkit (`src/store`)
     *   `authSlice`: Manages user session, authentication state, and user profile data.
-    *   `bookingSlice`: Manages the currently active booking flow (`currentBooking`), booking history, and active module (flight/bus/train).
+    *   `bookingSlice`: Manages the currently active booking flow (`currentBooking`), booking history, and active module (flight/bus/hotel).
     *   `notificationSlice`: Manages user alerts and notifications.
 *   **Styling:** Tailwind CSS with GSAP for animations.
-*   **Current State:** The application is completely UI-complete but relies entirely on **hardcoded mock data** (e.g., `ALL_FLIGHTS`, `ALL_BUSES`, `ALL_TRAINS` in the UI components). There is currently no API fetching layer (no Axios, Fetch, or RTK Query implemented yet).
+*   **Current State:** The client uses local sample data and currently has no API fetching layer (no Axios, Fetch, or RTK Query integration).
 
 ---
 
 ## 2. Core User Flows & Routing
 
-The application is divided into three primary modules: **Flights**, **Buses**, and **Trains**. The core flow is unified under a single booking engine.
+The application presents three travel categories: **Flights**, **Buses**, and **Hotels**. The booking flow is shared across these categories.
 
 ### A. Authentication Flow
 *   **Routes:** `/(auth)/login`, `/(auth)/signup`
 *   **Flow:** Standard email/password or OAuth (if implemented later). Upon successful login, the user's data (defined in `User` type) must be dispatched to the Redux `authSlice`.
 
 ### B. Module Home Pages
-*   **Routes:** `/flights`, `/buses`, `/trains`, `/` (Main Home)
+*   **Routes:** `/flights`, `/buses`, `/hotels`, `/` (Main Home)
 *   **Flow:** These are promotional landing pages. They display:
     *   Popular routes / Trending destinations.
     *   Offers and banners.
@@ -33,14 +33,14 @@ The application is divided into three primary modules: **Flights**, **Buses**, a
 *   **Action:** When a user searches for a ticket, they are redirected to the Unified Booking Page with query parameters (e.g., `/book?category=flight&from=DEL&to=BOM&date=2024-12-01`).
 
 ### C. The Unified Booking Flow
-*   **Route:** `/book` (Query params determine the mode: `?category=flight|bus|train`)
+*   **Route:** `/book` (Query params determine the mode: `?category=flight|bus|hotel`)
 *   **Flow:**
     1.  **Search & List:** The page reads the query parameters and displays a list of available tickets.
-    2.  **Filters:** Users can filter by price, rating, stops (flights), amenities (buses), and quotas (trains).
-    3.  **Selection:** Clicking on a specific Flight/Bus/Train card opens the `BookingDetailsView` component.
+    2.  **Filters:** Users can filter by price, rating, and category-specific options such as stops, amenities, or stay type.
+    3.  **Selection:** Selecting a flight, bus, or hotel opens the `BookingDetailsView` component.
     4.  **Seat Layout & Configuration (In `BookingDetailsView`):** 
         *   For Buses: Visual seat layout selection.
-        *   For Trains: Class/Berth preference selection.
+        *   For Hotels: Room type and stay details.
         *   For Flights: Cabin class and add-ons selection.
     5.  **Passenger Details:** Entering passenger names, ages, and IDs.
     6.  **Checkout:** Reviewing the price breakdown (Base fare, Taxes, Convenience fee) and selecting a payment method.
@@ -62,8 +62,8 @@ The backend needs to provide data matching the TypeScript interfaces defined in 
 *   **`User`**: `id`, `name`, `email`, `phone`, `membershipTier`, `preferences` (theme, language).
 *   **`Flight`**: `id`, `airline`, `flightNo`, `from/fromCode`, `to/toCode`, `departure/arrival`, `duration`, `price`, `type` (Economy/Business), `stops`, `amenities`.
 *   **`Bus`**: `id`, `operator`, `type` (AC Sleeper, etc.), `from/to`, `departure/arrival`, `price`, `availableSeats`, `amenities`, **`seatLayout`** (Crucial for seat selection UI).
-*   **`Train`**: `id`, `trainNumber`, `name`, `type`, `source/destination`, `departure/arrival`, `runDays`, **`classes`** (List of classes like 3A, SL with availability status `AVL`, `WL`, `RAC` and pricing).
-*   **`Booking`**: `id`, `userId`, `type` (flight/bus/train), `status` (confirmed/pending), `totalAmount`, `passengers`, and module-specific details (`flightBooking`, `busBooking`, `trainBooking`).
+*   **`Hotel`**: `id`, `name`, `city`, `area`, `type`, `rating`, `price`, and stay details such as check-in, check-out, and guests.
+*   **`Booking`**: `id`, `userId`, `type` (flight/bus/hotel), `status` (confirmed/pending), `totalAmount`, travelers, and category-specific details (`flightBooking`, `busBooking`, `hotelBooking`).
 
 ---
 
@@ -81,7 +81,7 @@ To bring the client to life, the backend developer should implement the followin
 *   `GET /api/flights/search` - Query params: `from`, `to`, `date`, `class`, `passengers`.
 *   `GET /api/buses/search` - Query params: `from`, `to`, `date`.
 *   `GET /api/buses/:id/layout` - Returns the `BusSeatLayout` for seat selection.
-*   `GET /api/trains/search` - Query params: `from`, `to`, `date`, `quota`.
+*   `GET /api/hotels/search` - Query params: `destination`, `checkIn`, `checkOut`, `guests`.
 
 ### Bookings
 *   `POST /api/bookings` - Create a new booking (requires payload of selected seats/classes, passenger details, and module). Returns a booking ID for payment processing.
@@ -90,5 +90,5 @@ To bring the client to life, the backend developer should implement the followin
 *   `POST /api/bookings/:id/cancel` - Initiate a cancellation.
 
 ### Static Data & Config
-*   `GET /api/config/cities` - Get available cities/airports/stations for autocomplete.
+*   `GET /api/config/cities` - Get available cities and airports for autocomplete.
 *   `GET /api/offers` - Get active promotional banners and discount codes.

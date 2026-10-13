@@ -6,7 +6,6 @@ import {
   Airplane01Icon,
   Bus01Icon,
   Hotel01Icon,
-  Train01Icon,
   Ticket01Icon,
   Download01Icon,
   Cancel01Icon,
@@ -15,7 +14,7 @@ import {
 export interface ETicket {
   id: string;
   pnr: string;
-  type: "flight" | "bus" | "train" | "hotel";
+  type: "flight" | "bus" | "hotel";
   operatorName: string;
   serviceName: string;
   fromCity: string;
@@ -41,8 +40,7 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
   const renderTransportIcon = (className = "w-5 h-5 text-orange-400") => {
     if (ticket.type === "flight") return <HugeiconsIcon icon={Airplane01Icon} className={className} />;
     if (ticket.type === "bus") return <HugeiconsIcon icon={Bus01Icon} className={className} />;
-    if (ticket.type === "hotel") return <HugeiconsIcon icon={Hotel01Icon} className={className} />;
-    return <HugeiconsIcon icon={Train01Icon} className={className} />;
+    return <HugeiconsIcon icon={Hotel01Icon} className={className} />;
   };
 
   const getStatusStyle = () => {

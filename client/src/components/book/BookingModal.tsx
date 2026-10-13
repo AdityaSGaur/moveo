@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Cancel01Icon, Airplane01Icon, Bus01Icon as BusIcon, Train01Icon as TrainIcon, UserMultipleIcon } from '@hugeicons/core-free-icons';
+import { Cancel01Icon, Airplane01Icon, Bus01Icon as BusIcon, UserMultipleIcon } from '@hugeicons/core-free-icons';
 
 import { Passenger } from '@/types';
 
 interface BookingModalProps {
   item: any;
-  type: "flight" | "bus" | "train";
+  type: "flight" | "bus";
   onClose: () => void;
 }
 
@@ -20,16 +20,12 @@ export const BookingModal = ({ item, type, onClose }: BookingModalProps) => {
   const [infants, setInfants] = useState(0);
   const [showPassengerDetails, setShowPassengerDetails] = useState(false);
   const [passengerDetails, setPassengerDetails] = useState<Passenger[]>(() => [{ name: '', age: 30, gender: 'male' } as Passenger]);
-  const [selectedClass, setSelectedClass] = useState(item.type || (item.classes && item.classes[0]?.name) || "Standard");
+  const [selectedClass, setSelectedClass] = useState(item.type || "Standard");
 
   // Prevent click from propagating to background
   const handleContentClick = (e: React.MouseEvent) => e.stopPropagation();
 
   const getBasePrice = () => {
-    if (type === "train" && item.classes) {
-      const cls = item.classes.find((c: any) => c.name === selectedClass);
-      return cls ? cls.price : item.classes[0].price;
-    }
     return item.price || 2500;
   };
   const totalPassengers = adults + children + infants || 1;
@@ -52,7 +48,7 @@ export const BookingModal = ({ item, type, onClose }: BookingModalProps) => {
         <div className="flex items-center justify-between p-6 border-b border-white/5 bg-surface/50">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-2xl bg-accent-primary/20 text-accent-primary border border-accent-primary/20">
-              <HugeiconsIcon icon={type === "flight" ? Airplane01Icon : type === "bus" ? BusIcon : TrainIcon} size={24} />
+              <HugeiconsIcon icon={type === "flight" ? Airplane01Icon : BusIcon} size={24} />
             </div>
             <div>
               <h2 className="text-xl font-bold font-display">Booking Options</h2>
@@ -97,7 +93,7 @@ export const BookingModal = ({ item, type, onClose }: BookingModalProps) => {
                   Select Class
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {(type === "train" ? item.classes.map((c: any) => c.name) : type === "bus" ? [item.type, "VIP Sleeper"] : ["Economy", "Premium", "Business"]).map((cls: string) => (
+                  {(type === "bus" ? [item.type, "VIP Sleeper"] : ["Economy", "Premium", "Business"]).map((cls: string) => (
                     <button 
                       key={cls}
                       onClick={() => setSelectedClass(cls)}

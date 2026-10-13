@@ -7,7 +7,6 @@ import {
   Airplane01Icon, 
   Bus01Icon as BusIcon, 
   Hotel01Icon,
-  Train01Icon as TrainIcon, 
   UserMultipleIcon,
   CheckmarkBadge01Icon,
   InformationCircleIcon,
@@ -29,7 +28,7 @@ function Stars({ rating, size=12 }: { rating:number;size?:number }) {
 
 interface BookingDetailsViewProps {
   item: any;
-  type: "flight" | "bus" | "train" | "hotel";
+  type: "flight" | "bus" | "hotel";
   onBack: () => void;
   recommendedOptions: any[];
   onSelectRecommended: (item: any) => void;
@@ -48,14 +47,9 @@ export const BookingDetailsView = ({
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
   // selected class/state used by pricing logic
-  const [selectedClass, setSelectedClass] = useState(type === "hotel" ? "Deluxe Room" : item.type || (item.classes && item.classes[0]?.name) || "Standard");
+  const [selectedClass, setSelectedClass] = useState(type === "hotel" ? "Deluxe Room" : item.type || "Standard");
 
-  // base price resolver (kept as const to avoid accidental hoisting issues)
   const getBasePrice = () => {
-    if (type === "train" && item.classes) {
-      const cls = item.classes.find((c: any) => c.name === selectedClass);
-      return cls ? cls.price : item.classes[0].price;
-    }
     return item.price || 2500;
   };
 
@@ -109,7 +103,7 @@ export const BookingDetailsView = ({
     return Array.from({ length: 1 }).map(() => ({ name: '', age: 30, gender: 'male' } as Passenger));
   });
 
-  const Icon = type === "flight" ? Airplane01Icon : type === "bus" ? BusIcon : type === "hotel" ? Hotel01Icon : TrainIcon;
+  const Icon = type === "flight" ? Airplane01Icon : type === "bus" ? BusIcon : Hotel01Icon;
 
   return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-8 duration-500">
@@ -231,7 +225,7 @@ export const BookingDetailsView = ({
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary mb-3 block">{type === "hotel" ? "Room type" : "Select Class"}</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {(type === "train" ? item.classes.map((c: any) => c.name) : type === "hotel" ? ["Deluxe Room", "Suite"] : type === "bus" ? [item.type, "VIP Sleeper"] : ["Economy", "Premium", "Business"]).map((cls: string) => (
+                  {(type === "hotel" ? ["Deluxe Room", "Suite"] : type === "bus" ? [item.type, "VIP Sleeper"] : ["Economy", "Premium", "Business"]).map((cls: string) => (
                     <button 
                       key={cls}
                       onClick={() => setSelectedClass(cls)}
@@ -434,7 +428,6 @@ export const BookingDetailsView = ({
                     updatedAt: new Date().toISOString(),
                     flightBooking: type === 'flight' ? { flightId: item.id, flightNumber: item.flightNo || '', airlineName: item.airline || '', airlineLogo: item.logo || '', source: item.from || '', destination: item.to || '', departureTime: item.departure, arrivalTime: item.arrival, seats: [] } : undefined,
                     busBooking: type === 'bus' ? { busId: item.id, operatorName: item.operator || '', busType: item.type || '', source: item.from || '', destination: item.to || '', departureTime: item.departure, arrivalTime: item.arrival, boardingPoint: '', droppingPoint: '', seats: [], passengers: passengerDetails } : undefined,
-                    trainBooking: type === 'train' ? { trainNumber: item.number || '', trainName: item.name || '', source: item.from || '', destination: item.to || '', departureTime: item.departure, arrivalTime: item.arrival, travelClass: selectedClass, pnr: '', passengers: passengerDetails, berthPreferences: [] } : undefined,
                     hotelBooking: type === 'hotel' ? { hotelId: item.id, hotelName: item.name, city: item.city, checkIn: item.checkIn, checkOut: item.checkOut, guests: totalPassengers, roomType: selectedClass, guestsList: passengerDetails } : undefined,
                   } as any;
 
@@ -459,7 +452,7 @@ export const BookingDetailsView = ({
           <h2 className="text-2xl font-bold font-display mb-6">Recommended Alternative Options</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {recommendedOptions.map(rec => {
-              const props = type === "flight" ? { flight: rec } : type === "bus" ? { bus: rec } : { train: rec };
+              const props = type === "flight" ? { flight: rec } : type === "bus" ? { bus: rec } : { hotel: rec };
               return (
                 <CardComponent 
                   key={rec.id} 

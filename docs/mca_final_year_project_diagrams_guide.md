@@ -75,7 +75,7 @@ graph TD
     USER -- "1. Search Queries, Credentials, Seat Preferences, Payment Info" --> MOVEO
     MOVEO -- "2. Search Results, E-Tickets, Profile, Loyalty Balance, Offers" --> USER
 
-    ADMIN -- "3. Inventory Updates, Flight/Bus/Train Schedules, Analytics Queries" --> MOVEO
+    ADMIN -- "3. Flight/Bus Inventory, Hotel Availability, Analytics Queries" --> MOVEO
     MOVEO -- "4. Platform Analytics Reports, Booking Logs, Revenue Metrics" --> ADMIN
 
     MOVEO -- "5. Payment Authorization Request" --> PAY_GATEWAY
@@ -187,7 +187,7 @@ graph LR
 
     subgraph Moveo Ticket Booking Platform
         usecase UC1 as "Register & Login (JWT)"
-        usecase UC2 as "Search Flights / Buses / Trains"
+        usecase UC2 as "Search Flights / Buses / Hotels"
         usecase UC3 as "Filter by Price, Duration, Amenities"
         usecase UC4 as "View Interactive Seat Layout"
         usecase UC5 as "Select Seat & Lock Inventory"
@@ -414,11 +414,11 @@ sequenceDiagram
     Client->>GW: POST /api/v1/bookings
     GW->>Saga: Start Booking Saga
 
-    Note over Saga,Inv: Step 1: Reserve Seat
-    Saga->>Inv: Reserve Seat (Flight/Bus/Train)
-    alt Seat Reservation Fails
+    Note over Saga,Inv: Step 1: Reserve Inventory
+    Saga->>Inv: Reserve Flight, Bus, or Hotel Inventory
+    alt Inventory Reservation Fails
         Inv-->>Saga: 409 Conflict
-        Saga-->>GW: Saga Failed (Seat Taken)
+        Saga-->>GW: Saga Failed (Inventory Unavailable)
         GW-->>Client: Display Error to User
     else Seat Reserved
         Inv-->>Saga: 200 Reserved (Expires in 10m)
@@ -494,11 +494,11 @@ stateDiagram-v2
         ApplyFilters --> ListItems
     }
 
-    DisplayResults --> SelectItem: Click Specific Flight/Bus/Train
-    SelectItem --> ViewSeatLayout: Render Seat Selection View
+    DisplayResults --> SelectItem: Select Flight/Bus/Hotel
+    SelectItem --> ViewBookingDetails: Review Booking Details
     
-    ViewSeatLayout --> SeatSelection: Select Seat Number & Class
-    SeatSelection --> EnterPassengers: Enter Passenger Details
+    ViewBookingDetails --> SelectionDetails: Select Travel Option or Room Type
+    SelectionDetails --> EnterPassengers: Enter Traveler Details
     
     EnterPassengers --> ApplyCoupon: [Optional] Input Promo Code
     ApplyCoupon --> ReviewCheckout: Review Price Breakdown
@@ -569,7 +569,7 @@ erDiagram
     %% Inventory Microservice DB
     INVENTORY_ITEMS {
         uuid id PK
-        string category "FLIGHT | BUS | TRAIN"
+        string category "FLIGHT | BUS | HOTEL"
         string service_number
         string operator_name
         string source_city

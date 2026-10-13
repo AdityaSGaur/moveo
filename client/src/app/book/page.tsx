@@ -290,7 +290,7 @@ const HOTEL_SUGGESTIONS  = [
 function BookingHubContent() {
   const searchParams  = useSearchParams();
   const requestedCategory = searchParams.get("category");
-  const initCat = requestedCategory === "bus" ? "bus" : requestedCategory === "hotel" || requestedCategory === "train" ? "hotel" : "flight";
+  const initCat = requestedCategory === "bus" ? "bus" : requestedCategory === "hotel" ? "hotel" : "flight";
   const initialDestination = searchParams.get("destination") ?? "";
 
   const [category,      setCategory]      = useState<"flight"|"bus"|"hotel">(initCat);

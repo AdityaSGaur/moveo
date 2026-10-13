@@ -4,7 +4,7 @@
 
 export const siteConfig = {
   name: "Moveo",
-  tagline: "Book. Ride. Watch. Repeat.",
+  tagline: "Book. Travel. Stay.",
   description:
     "Your all-in-one travel booking platform for flights, buses, and hotels.",
   url: "https://moveo.app",
@@ -74,24 +74,6 @@ export const cities = [
   "Indore",
   "Bhopal",
   "Goa",
-];
-
-export const trainClasses = [
-  { code: "SL", name: "Sleeper" },
-  { code: "3A", name: "3rd AC" },
-  { code: "2A", name: "2nd AC" },
-  { code: "1A", name: "1st AC" },
-  { code: "CC", name: "Chair Car" },
-  { code: "EC", name: "Executive Chair" },
-  { code: "2S", name: "Second Sitting" },
-];
-
-export const trainQuotas = [
-  { code: "GN", name: "General" },
-  { code: "TQ", name: "Tatkal" },
-  { code: "LD", name: "Ladies" },
-  { code: "SS", name: "Senior Citizen" },
-  { code: "HP", name: "Handicapped" },
 ];
 
 export const busTypes = [

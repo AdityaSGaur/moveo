@@ -19,7 +19,7 @@ class UserPreferencesResponse(BaseModel):
         serialization_alias="defaultTravelClass"
     )
     preferredBookingTypes: list[str] = Field(
-        default_factory=lambda: ["flight", "bus", "train"],
+        default_factory=lambda: ["flight", "bus", "hotel"],
         validation_alias=AliasChoices("preferred_booking_types", "preferredBookingTypes"),
         serialization_alias="preferredBookingTypes"
     )
@@ -79,4 +79,3 @@ class AuthResponse(BaseModel):
     message: str = "Authentication successful"
 
     model_config = ConfigDict(populate_by_name=True)
-

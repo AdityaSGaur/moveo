@@ -29,7 +29,7 @@ This document summarizes the project milestones visible in the repository histor
 
 ### 2026-06-13 - Booking and frontend cleanup
 
-- Moved `SmartSearch` into the Book page for the Flights, Buses, and Trains tabs.
+- Moved `SmartSearch` into the Book page and refined the travel search tabs.
 - Removed default values from authentication form inputs and disabled signup autofill.
 - Updated the `BookingDetailsView` card-component typing to address a TypeScript assignability issue.
 - Replaced affected Tailwind gradient utility names with canonical `bg-linear-to-*` utilities.
@@ -51,7 +51,7 @@ The progress note from that date also listed live-status search and a footer-ren
 
 ## Current repository status
 
-- **Client:** A Next.js application with routes for booking, flights, buses, trains, hotels, community, authentication, dashboard, and profile.
+- **Client:** A Next.js application with routes for booking, flights, buses, hotels, community, authentication, dashboard, and profile.
 - **Backend:** FastAPI service scaffolding and Docker Compose definitions for local infrastructure. Some service entry points and shared modules are empty; see [`../backend/README.md`](../backend/README.md).
 - **AI services:** The `chatbot/`, `fare_prediction/`, and `recommendation_engine/` directories currently contain no implementation files; see [`../ai-service/README.md`](../ai-service/README.md).
 - **Deployment infrastructure:** The `kubernetes/`, `nginx/`, and `terraform/` directories currently contain no implementation files; see [`../infrastructure/README.md`](../infrastructure/README.md).

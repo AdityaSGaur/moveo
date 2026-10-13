@@ -46,7 +46,7 @@ backend/
 |   +-- admin/                   Administration service
 |   +-- auth/                    Authentication and user service
 |   +-- booking/                 Booking service
-|   +-- inventory/               Flight, bus, and train inventory
+|   +-- inventory/               Flight and bus inventory scaffolding
 |   +-- loyalty/                 Loyalty service
 |   +-- notification/            Notification service
 |   +-- payment/                 Payment service
@@ -66,7 +66,7 @@ backend/
 |---|---:|---|
 | API Gateway | 8000 | Intended public entry point and request routing |
 | Auth | 8001 | User authentication and profiles |
-| Inventory | 8002 | Flight, bus, and train inventory |
+| Inventory | 8002 | Flight and bus inventory scaffolding |
 | Search | 8003 | Travel search |
 | Booking | 8004 | Booking operations |
 | Payment | 8005 | Payment operations |

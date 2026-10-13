@@ -9,7 +9,6 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     | "info"
     | "flight"
     | "bus"
-    | "train"
     | "hotel";
   size?: "sm" | "md";
   dot?: boolean;
@@ -31,7 +30,6 @@ export const Badge: React.FC<BadgeProps> = ({
     info: "bg-info/10 text-info border border-info/20",
     flight: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
     bus: "bg-module-bus/10 text-module-bus border border-module-bus/20",
-    train: "bg-module-train/10 text-module-train border border-module-train/20",
     hotel: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
   };
 
@@ -43,7 +41,6 @@ export const Badge: React.FC<BadgeProps> = ({
     info: "bg-info",
     flight: "bg-blue-500",
     bus: "bg-module-bus",
-    train: "bg-module-train",
     hotel: "bg-emerald-500",
   };
 
