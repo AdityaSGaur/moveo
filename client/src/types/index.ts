@@ -20,7 +20,7 @@ export interface UserPreferences {
   theme: "dark" | "light";
   language: string;
   defaultTravelClass?: string;
-  preferredBookingTypes: ("flight" | "bus" | "train")[];
+  preferredBookingTypes: ("flight" | "bus" | "train" | "hotel")[];
 }
 
 
@@ -141,7 +141,7 @@ export interface TrainStop {
 export interface Booking {
   id: string;
   userId: string;
-  type: "flight" | "bus" | "train";
+  type: "flight" | "bus" | "train" | "hotel";
   status: "confirmed" | "pending" | "cancelled" | "completed";
   totalAmount: number;
   discount?: number;
@@ -154,6 +154,7 @@ export interface Booking {
   flightBooking?: FlightBookingDetails;
   busBooking?: BusBookingDetails;
   trainBooking?: TrainBookingDetails;
+  hotelBooking?: HotelBookingDetails;
 }
 
 export interface FlightBookingDetails {
@@ -194,6 +195,17 @@ export interface TrainBookingDetails {
   pnr: string;
   passengers: Passenger[];
   berthPreferences: string[];
+}
+
+export interface HotelBookingDetails {
+  hotelId: string | number;
+  hotelName: string;
+  city: string;
+  checkIn?: string;
+  checkOut?: string;
+  guests: number;
+  roomType: string;
+  guestsList: Passenger[];
 }
 
 export interface Passenger {
@@ -253,7 +265,7 @@ export interface Offer {
   discountAmount?: number;
   minAmount?: number;
   maxDiscount?: number;
-  applicableModules: ("flight" | "bus" | "train")[];
+  applicableModules: ("flight" | "bus" | "train" | "hotel")[];
   validUntil: string;
   bannerImage?: string;
 }
@@ -277,11 +289,11 @@ export interface Pagination {
 }
 
 // ---- Component Prop Types ----
-export type ModuleType = "flight" | "bus" | "train";
+export type ModuleType = "flight" | "bus" | "train" | "hotel";
 
 export interface SearchSuggestion {
   id: string;
-  type: "city" | "station" | "flight" | "route";
+  type: "city" | "station" | "flight" | "route" | "hotel";
   label: string;
   sublabel?: string;
   icon?: string;

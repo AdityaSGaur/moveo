@@ -6,7 +6,6 @@ import {
   Ticket01Icon,
   Airplane01Icon,
   Bus01Icon,
-  Train01Icon,
   Download01Icon,
   Cancel01Icon,
   CheckmarkCircle02Icon,
@@ -24,7 +23,7 @@ export const ETicketGeneratorModal: React.FC<ETicketGeneratorModalProps> = ({
   onClose,
   onTicketGenerated,
 }) => {
-  const [type, setType] = useState<"flight" | "bus" | "train">("flight");
+  const [type, setType] = useState<"flight" | "bus">("flight");
   const [operatorName, setOperatorName] = useState("Air India");
   const [serviceName, setServiceName] = useState("AI-102 Superfast");
   const [fromCity, setFromCity] = useState("Mumbai");
@@ -206,18 +205,6 @@ export const ETicketGeneratorModal: React.FC<ETicketGeneratorModalProps> = ({
                   <HugeiconsIcon icon={Bus01Icon} className="w-4 h-4" />
                   <span>Bus</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => { setType("train"); setOperatorName("Shatabdi Express"); }}
-                  className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                    type === "train"
-                      ? "bg-orange-500/15 border-orange-500 text-orange-400"
-                      : "bg-surface-elevated border-text-tertiary/20 text-text-secondary"
-                  }`}
-                >
-                  <HugeiconsIcon icon={Train01Icon} className="w-4 h-4" />
-                  <span>Train</span>
-                </button>
               </div>
             </div>
 
@@ -237,7 +224,7 @@ export const ETicketGeneratorModal: React.FC<ETicketGeneratorModalProps> = ({
               </div>
               <div>
                 <label className="text-[10px] font-bold text-text-tertiary uppercase block mb-1">
-                  Service / Train No.
+                  Service Number
                 </label>
                 <input
                   type="text"

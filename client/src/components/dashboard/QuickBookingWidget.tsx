@@ -6,14 +6,14 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Airplane01Icon,
   Bus01Icon,
-  Train01Icon,
+  Hotel01Icon,
   SparklesIcon,
   ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 
 export const QuickBookingWidget: React.FC = () => {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"flights" | "buses" | "trains">("buses");
+  const [activeTab, setActiveTab] = useState<"flights" | "buses" | "hotels">("buses");
   const [fromCity, setFromCity] = useState("Mumbai");
   const [toCity, setToCity] = useState("Goa");
   const [date, setDate] = useState("2026-09-01");
@@ -21,12 +21,16 @@ export const QuickBookingWidget: React.FC = () => {
   const POPULAR_ROUTES = [
     { from: "Mumbai", to: "Goa", mode: "buses", label: "Mumbai ➔ Goa (Bus)" },
     { from: "Delhi", to: "Manali", mode: "buses", label: "Delhi ➔ Manali (Volvo)" },
-    { from: "Bangalore", to: "Chennai", mode: "trains", label: "Bangalore ➔ Chennai (Train)" },
+    { from: "Goa", to: "2", mode: "hotels", label: "Goa stays · 2 guests" },
     { from: "Mumbai", to: "Delhi", mode: "flights", label: "Mumbai ➔ Delhi (Flight)" },
   ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    if (activeTab === "hotels") {
+      router.push(`/book?category=hotel&destination=${encodeURIComponent(fromCity)}&checkIn=${date}&guests=${encodeURIComponent(toCity)}`);
+      return;
+    }
     router.push(`/${activeTab}?from=${encodeURIComponent(fromCity)}&to=${encodeURIComponent(toCity)}&date=${date}`);
   };
 
@@ -38,7 +42,7 @@ export const QuickBookingWidget: React.FC = () => {
             <span>Quick Travel Search</span>
             <HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-orange-400" />
           </h2>
-          <p className="text-xs text-text-tertiary">Book flight, bus, or train tickets instantly</p>
+          <p className="text-xs text-text-tertiary">Find flights, buses, and stays for your next trip</p>
         </div>
 
         {/* Transport Type Tabs */}
@@ -66,15 +70,15 @@ export const QuickBookingWidget: React.FC = () => {
             <span>Buses</span>
           </button>
           <button
-            onClick={() => { setActiveTab("trains"); setFromCity("Bangalore"); setToCity("Chennai"); }}
+            onClick={() => { setActiveTab("hotels"); setFromCity("Goa"); setToCity("2"); }}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              activeTab === "trains"
+              activeTab === "hotels"
                 ? "bg-orange-500 text-white shadow-md"
                 : "text-text-tertiary hover:text-text-primary"
             }`}
           >
-            <HugeiconsIcon icon={Train01Icon} className="w-3.5 h-3.5" />
-            <span>Trains</span>
+            <HugeiconsIcon icon={Hotel01Icon} className="w-3.5 h-3.5" />
+            <span>Hotels</span>
           </button>
         </div>
       </div>
@@ -84,14 +88,14 @@ export const QuickBookingWidget: React.FC = () => {
         {/* From */}
         <div className="sm:col-span-4">
           <label className="text-[10px] font-bold text-text-tertiary uppercase tracking-wider block mb-1">
-            From City
+            {activeTab === "hotels" ? "Destination" : "From City"}
           </label>
           <input
             type="text"
             value={fromCity}
             onChange={(e) => setFromCity(e.target.value)}
             className="w-full bg-surface-elevated border border-text-tertiary/20 rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm text-text-primary focus:outline-none focus:border-orange-500 font-semibold"
-            placeholder="Origin"
+            placeholder={activeTab === "hotels" ? "City or area" : "Origin"}
             required
           />
         </div>
@@ -99,14 +103,15 @@ export const QuickBookingWidget: React.FC = () => {
         {/* To */}
         <div className="sm:col-span-4">
           <label className="text-[10px] font-bold text-text-tertiary uppercase tracking-wider block mb-1">
-            To Destination
+            {activeTab === "hotels" ? "Guests" : "To Destination"}
           </label>
           <input
-            type="text"
+            type={activeTab === "hotels" ? "number" : "text"}
+            min={activeTab === "hotels" ? 1 : undefined}
             value={toCity}
             onChange={(e) => setToCity(e.target.value)}
             className="w-full bg-surface-elevated border border-text-tertiary/20 rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm text-text-primary focus:outline-none focus:border-orange-500 font-semibold"
-            placeholder="Destination"
+            placeholder={activeTab === "hotels" ? "2" : "Destination"}
             required
           />
         </div>

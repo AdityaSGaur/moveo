@@ -13,7 +13,7 @@ import {
   ArrowRight01Icon,
   Airplane01Icon,
   BusIcon,
-  TrainIcon,
+  Hotel01Icon,
   AiInnovation01Icon,
   Clock01Icon,
   Cancel01Icon,
@@ -25,7 +25,7 @@ import { BookingDetailsView } from "@/components/book/BookingDetailsView";
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 import { SmartSearch } from "@/components/home/SmartSearch";
 
-const CARD_CHUNK   = 4;   // flight/bus/train cards per batch
+const CARD_CHUNK   = 4;   // cards per batch
 const LOAD_DELAY   = 900; // ms of skeleton before showing content
 
 // ─── EXPANDED MOCK DATA ───────────────────────────────────────────────────────
@@ -60,22 +60,20 @@ const ALL_BUSES = [
   { id: 12, operator: "Rajasthan ST",      type: "Sleeper",         departure: "09:00 PM", arrival: "08:00 AM", duration: "11h",   from: "Delhi",     to: "Udaipur",   rating: 3.5, seats: 44, price: 540,  amenities: [],                           busNumber: "RJ-07-PA-5432" },
 ];
 
-const ALL_TRAINS = [
-  { id: 1,  number: "12028", name: "Chennai Mail",            type: "Superfast",from: "Chennai Central",     fromCode: "MAS",  to: "Mumbai CSMT",           toCode: "CSMT", departure: "22:00", arrival: "10:30+1", duration: "12h 30m", classes: [{code:"SL",name:"Sleeper",price:485,status:"AVL",count:124},{code:"3A",name:"3rd AC",price:1285,status:"AVL",count:64},{code:"2A",name:"2nd AC",price:1840,status:"WL",count:8}],  rating: 4.1, runDays: "Mon, Tue, Thu, Sat" },
-  { id: 2,  number: "12218", name: "Kerala Express",          type: "Rajdhani", from: "Trivandrum Central",  fromCode: "TVC",  to: "Delhi Hazrat Nizamuddin",toCode: "NZM",  departure: "11:15", arrival: "14:30+1", duration: "27h 15m", classes: [{code:"1A",name:"1st AC",price:4200,status:"AVL",count:6},{code:"2A",name:"2nd AC",price:2460,status:"AVL",count:22},{code:"3A",name:"3rd AC",price:1680,status:"GNWL",count:12}], rating: 4.5, runDays: "Daily" },
-  { id: 3,  number: "12609", name: "Navyug Express",          type: "Express",  from: "Bangalore City",      fromCode: "SBC",  to: "Mumbai CSMT",           toCode: "CSMT", departure: "21:30", arrival: "11:00+1", duration: "13h 30m", classes: [{code:"SL",name:"Sleeper",price:385,status:"AVL",count:210},{code:"3A",name:"3rd AC",price:1040,status:"AVL",count:48}],                                                       rating: 3.8, runDays: "Mon, Wed, Fri, Sun" },
-  { id: 4,  number: "12001", name: "Shatabdi Express",        type: "Shatabdi", from: "Bhopal Junction",     fromCode: "BPL",  to: "New Delhi",             toCode: "NDLS", departure: "06:00", arrival: "13:30",   duration: "7h 30m",  classes: [{code:"CC",name:"Chair Car",price:1040,status:"AVL",count:80},{code:"EC",name:"Executive",price:1890,status:"AVL",count:18}],                                              rating: 4.4, runDays: "Daily except Tue" },
-  { id: 5,  number: "12622", name: "Tamil Nadu SF Express",   type: "Superfast",from: "Chennai Central",     fromCode: "MAS",  to: "New Delhi",             toCode: "NDLS", departure: "22:00", arrival: "07:00+2", duration: "33h",     classes: [{code:"SL",name:"Sleeper",price:665,status:"AVL",count:280},{code:"3A",name:"3rd AC",price:1740,status:"AVL",count:90},{code:"2A",name:"2nd AC",price:2490,status:"WL",count:4}],    rating: 4.2, runDays: "Daily" },
-  { id: 6,  number: "12953", name: "August Kranti Rajdhani",  type: "Rajdhani", from: "Mumbai Central",      fromCode: "MMCT", to: "New Delhi",             toCode: "NDLS", departure: "17:40", arrival: "10:55+1", duration: "17h 15m", classes: [{code:"2A",name:"2nd AC",price:2460,status:"AVL",count:22},{code:"3A",name:"3rd AC",price:1680,status:"AVL",count:54},{code:"1A",name:"1st AC",price:4100,status:"AVL",count:8}],  rating: 4.6, runDays: "Daily except Wed" },
-  { id: 7,  number: "12259", name: "Sealdah Duronto",         type: "Duronto",  from: "Sealdah",             fromCode: "SDAH", to: "New Delhi",             toCode: "NDLS", departure: "20:05", arrival: "09:55+1", duration: "13h 50m", classes: [{code:"SL",name:"Sleeper",price:735,status:"GNWL",count:14},{code:"3A",name:"3rd AC",price:1880,status:"AVL",count:36}],                                                      rating: 4.0, runDays: "Tue, Thu, Sat" },
-  { id: 8,  number: "12431", name: "Rajdhani Express",        type: "Rajdhani", from: "Trivandrum Central",  fromCode: "TVC",  to: "New Delhi",             toCode: "NDLS", departure: "19:00", arrival: "17:45+2", duration: "46h 45m", classes: [{code:"1A",name:"1st AC",price:6100,status:"AVL",count:4},{code:"2A",name:"2nd AC",price:3580,status:"AVL",count:16},{code:"3A",name:"3rd AC",price:2420,status:"GNWL",count:5}], rating: 4.3, runDays: "Wed, Sun" },
-  { id: 9,  number: "12563", name: "Bihar Sampark Kranti",    type: "Superfast",from: "New Delhi",           fromCode: "NDLS", to: "Patna Junction",        toCode: "PNBE", departure: "09:15", arrival: "22:45",   duration: "13h 30m", classes: [{code:"SL",name:"Sleeper",price:310,status:"AVL",count:185},{code:"3A",name:"3rd AC",price:790,status:"AVL",count:62}],                                                        rating: 3.7, runDays: "Daily" },
-  { id: 10, number: "12057", name: "Jan Shatabdi Express",    type: "Shatabdi", from: "New Delhi",           fromCode: "NDLS", to: "Una Himachal",          toCode: "UHL",  departure: "05:50", arrival: "12:35",   duration: "6h 45m",  classes: [{code:"CC",name:"Chair Car",price:440,status:"AVL",count:110},{code:"SL",name:"Sleeper",price:185,status:"AVL",count:200}],                                              rating: 4.2, runDays: "Daily except Sun" },
+const ALL_HOTELS = [
+  { id: 1, name: "The Leela Palace", city: "Udaipur", area: "Lake Pichola", type: "Palace hotel", price: 22400, rating: 4.9, reviews: 984, image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85", amenities: ["Lake view", "Pool", "Breakfast"] },
+  { id: 2, name: "Taj Fort Aguada Resort", city: "Goa", area: "Sinquerim Beach", type: "Beach resort", price: 14800, rating: 4.8, reviews: 1240, image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=85", amenities: ["Beach access", "Pool", "Spa"] },
+  { id: 3, name: "The Oberoi Amarvilas", city: "Agra", area: "Taj East Gate Road", type: "Luxury hotel", price: 28600, rating: 4.9, reviews: 762, image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=85", amenities: ["Taj view", "Restaurant", "Pool"] },
+  { id: 4, name: "The Bombay Canteen Hotel", city: "Mumbai", area: "Lower Parel", type: "Design hotel", price: 9100, rating: 4.6, reviews: 538, image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1000&q=85", amenities: ["Restaurant", "City view", "Wi-Fi"] },
+  { id: 5, name: "ITC Gardenia", city: "Bengaluru", area: "Residency Road", type: "City hotel", price: 12600, rating: 4.7, reviews: 1106, image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1000&q=85", amenities: ["Pool", "Spa", "Breakfast"] },
+  { id: 6, name: "The Lodhi", city: "Delhi", area: "Lodhi Road", type: "Boutique hotel", price: 25300, rating: 4.8, reviews: 691, image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1000&q=85", amenities: ["Private pool", "Spa", "Restaurant"] },
+  { id: 7, name: "Taj Coromandel", city: "Chennai", area: "Nungambakkam", type: "Luxury hotel", price: 11700, rating: 4.6, reviews: 812, image: "https://images.unsplash.com/photo-1578774204375-826dc5d996ed?auto=format&fit=crop&w=1000&q=85", amenities: ["Pool", "Restaurant", "Gym"] },
+  { id: 8, name: "Evolve Back Coorg", city: "Coorg", area: "Siddapur", type: "Nature resort", price: 19800, rating: 4.9, reviews: 604, image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1000&q=85", amenities: ["Nature views", "Pool", "Spa"] },
 ];
 
 const FLIGHT_SUBCATEGORIES= ["All Classes", "Economy", "Premium Economy", "Business", "First Class"];
 const BUS_SUBCATEGORIES   = ["All Types","AC Sleeper","AC Seater","Volvo","Non-AC Sleeper","Semi-Sleeper"];
-const TRAIN_SUBCATEGORIES = ["All Classes","Sleeper (SL)","3rd AC (3A)","2nd AC (2A)","1st AC (1A)","Chair Car (CC)"];
+const HOTEL_SUBCATEGORIES = ["All Stays", "Luxury", "Boutique", "Beach resort", "Nature resort"];
 const RATING_FILTERS      = ["Any Rating","4.5+","4.0+","3.5+"];
 const STOPS_FILTERS       = ["All", "Non-stop", "1 Stop", "2+ Stops"];
 
@@ -105,17 +103,6 @@ function SkeletonCard() {
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
-function TrainStatusBadge({ status }: { status: string }) {
-  const m: Record<string,string> = {
-    AVL:"text-green-400 bg-green-500/10 border border-green-500/20",
-    RAC:"text-yellow-400 bg-yellow-500/10 border border-yellow-500/20",
-    WL:"text-orange-400 bg-orange-500/10 border border-orange-500/20",
-    GNWL:"text-orange-400 bg-orange-500/10 border border-orange-500/20",
-    REGRET:"text-red-400 bg-red-500/10 border border-red-500/20",
-  };
-  return <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${m[status]??"text-white/60"}`}>{status}</span>;
-}
-
 function Stars({ rating, size=12 }: { rating:number;size?:number }) {
   return (
     <div className="flex items-center gap-1">
@@ -130,7 +117,7 @@ function SuggestionIcon({ type }: { type: string }) {
     city:    <HugeiconsIcon icon={Location01Icon} size={16} className="text-text-secondary" />,
     route:   <HugeiconsIcon icon={BusIcon} size={16} className="text-text-secondary" />,
     flight:  <HugeiconsIcon icon={Airplane01Icon} size={16} className="text-text-secondary" />,
-    station: <HugeiconsIcon icon={TrainIcon} size={16} className="text-text-secondary" />,
+    hotel:   <HugeiconsIcon icon={Hotel01Icon} size={16} className="text-text-secondary" />,
   };
   return (
     <div className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center shrink-0">
@@ -207,9 +194,7 @@ function BusCard({ bus, onBook }: { bus: typeof ALL_BUSES[0], onBook: (item: any
             <span className="text-[10px] text-text-tertiary font-mono">{bus.duration}</span>
             <div className="flex items-center gap-1 w-full">
               <div className="h-px flex-1 bg-white/20" />
-              <div className="p-1.5 rounded-full bg-surface border border-white/10">
-                <HugeiconsIcon icon={BusIcon} size={12} className="text-accent-primary" />
-              </div>
+              <div className="p-1.5 rounded-full bg-surface border border-white/10"><HugeiconsIcon icon={BusIcon} size={12} className="text-accent-primary" /></div>
               <div className="h-px flex-1 bg-white/20" />
             </div>
           </div>
@@ -221,90 +206,41 @@ function BusCard({ bus, onBook }: { bus: typeof ALL_BUSES[0], onBook: (item: any
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
-          <div>
-            <div className="font-bold text-sm">{bus.operator}</div>
-            <div className="text-[11px] text-text-tertiary mt-0.5">{bus.type}</div>
-          </div>
+          <div><div className="font-bold text-sm">{bus.operator}</div><div className="text-[11px] text-text-tertiary mt-0.5">{bus.type}</div></div>
           <Stars rating={bus.rating} />
         </div>
         <div className="flex items-center gap-2 text-xs text-text-tertiary mb-3 mt-2">
           <span className="text-green-400 font-bold">{bus.seats} seats left</span>
-          <span className="text-white/20">·</span>
-          {bus.amenities.slice(0,2).map(a=>(
-            <span key={a} className="px-2 py-0.5 bg-surface rounded-full border border-white/10 text-[10px]">{a}</span>
-          ))}
-          {bus.amenities.length>2&&<span className="text-[10px] text-text-tertiary">+{bus.amenities.length-2}</span>}
+          {bus.amenities.slice(0, 2).map((amenity) => <span key={amenity} className="px-2 py-0.5 bg-surface rounded-full border border-white/10 text-[10px]">{amenity}</span>)}
         </div>
         <div className="flex items-center justify-between">
           <div><span className="text-xs text-text-tertiary">per seat · </span><span className="text-base font-display font-bold">₹{bus.price}</span></div>
-          <button onClick={(e) => { e.stopPropagation(); onBook(bus); }} className="flex items-center gap-1.5 px-4 py-2 bg-accent-primary text-background rounded-xl text-xs font-bold hover:opacity-90 transition-opacity">
-            Select Seats <HugeiconsIcon icon={ArrowRight01Icon} size={13} />
-          </button>
+          <button onClick={(event) => { event.stopPropagation(); onBook(bus); }} className="flex items-center gap-1.5 px-4 py-2 bg-accent-primary text-background rounded-xl text-xs font-bold hover:opacity-90 transition-opacity">Select Seats <HugeiconsIcon icon={ArrowRight01Icon} size={13} /></button>
         </div>
       </div>
     </div>
   );
 }
 
-function TrainCard({ train, onBook }: { train: typeof ALL_TRAINS[0], onBook: (item: any) => void }) {
+function HotelCard({ hotel, onBook }: { hotel: typeof ALL_HOTELS[number], onBook: (item: any) => void }) {
   return (
-    <div onClick={() => onBook(train)} className="group bg-surface-elevated rounded-2xl overflow-hidden border border-white/10 hover:border-white/25 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-      <div className="relative h-28 bg-linear-to-br from-surface to-surface-elevated flex items-center justify-center px-6 border-b border-white/5 overflow-hidden">
-        <div className="absolute inset-0 bg-linear-to-r from-yellow-500/5 to-transparent" />
-        <div className="flex items-center gap-3 w-full relative z-10">
-          <div className="text-left">
-            <div className="text-xl font-bold font-mono leading-none">{train.departure}</div>
-            <div className="text-xs text-accent-primary font-bold mt-0.5">{train.fromCode}</div>
-            <div className="text-[10px] text-text-tertiary">{train.from.split(" ")[0]}</div>
-          </div>
-          <div className="flex-1 flex flex-col items-center gap-1">
-            <span className="text-[10px] text-text-tertiary font-mono">{train.duration}</span>
-            <div className="flex items-center gap-1 w-full">
-              <div className="w-2 h-2 rounded-full border-2 border-accent-primary shrink-0" />
-              <div className="h-px flex-1 bg-white/20" />
-              <div className="p-1.5 rounded-full bg-surface border border-white/10">
-                <HugeiconsIcon icon={TrainIcon} size={12} className="text-accent-primary" />
-              </div>
-              <div className="h-px flex-1 bg-white/20" />
-              <div className="w-2 h-2 rounded-full bg-accent-primary shrink-0" />
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="text-xl font-bold font-mono leading-none">{train.arrival}</div>
-            <div className="text-xs text-accent-primary font-bold mt-0.5">{train.toCode}</div>
-            <div className="text-[10px] text-text-tertiary">{train.to.split(" ")[0]}</div>
-          </div>
-        </div>
+    <div onClick={() => onBook(hotel)} className="group bg-surface-elevated rounded-2xl overflow-hidden border border-white/10 hover:border-white/25 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+      <div className="relative h-48 bg-surface overflow-hidden">
+        <img src={hotel.image} alt={hotel.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <span className="absolute left-3 top-3 rounded-full bg-black/60 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">{hotel.type}</span>
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
-          <div>
-            <div className="font-bold text-sm">{train.name}</div>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-[10px] text-text-tertiary font-mono">#{train.number}</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface border border-white/10 text-text-tertiary font-bold">{train.type}</span>
-            </div>
-          </div>
-          <Stars rating={train.rating} />
+          <div><div className="font-bold text-sm">{hotel.name}</div><div className="text-[11px] text-text-tertiary mt-0.5">{hotel.area}, {hotel.city}</div></div>
+          <Stars rating={hotel.rating} />
         </div>
-        <div className="flex items-center gap-1.5 text-[10px] text-text-tertiary mb-3 mt-1.5">
-          <HugeiconsIcon icon={Calendar01Icon} size={10} />
-          <span>{train.runDays}</span>
+        <div className="flex items-center gap-1.5 flex-wrap my-3">
+          {hotel.amenities.map((amenity) => <span key={amenity} className="px-2 py-1 rounded-full bg-surface border border-white/10 text-[10px] text-text-secondary">{amenity}</span>)}
         </div>
-        <div className="flex gap-1.5 flex-wrap mb-4">
-          {train.classes.map(cls=>(
-            <div key={cls.code} className="flex flex-col items-start px-2.5 py-1.5 rounded-lg bg-surface border border-white/10 hover:border-accent-primary/40 transition-colors cursor-pointer">
-              <div className="flex items-center gap-1.5 mb-0.5">
-                <span className="text-[10px] font-bold text-text-secondary">{cls.name}</span>
-                <TrainStatusBadge status={cls.status} />
-              </div>
-              <span className="text-xs font-display font-bold">₹{cls.price}</span>
-            </div>
-          ))}
+        <div className="flex items-center justify-between pt-2">
+          <div><span className="text-xs text-text-tertiary">per night · </span><span className="text-base font-display font-bold">₹{hotel.price.toLocaleString("en-IN")}</span></div>
+          <button onClick={(event) => { event.stopPropagation(); onBook(hotel); }} className="flex items-center gap-1.5 px-3 py-2 bg-accent-primary text-background rounded-xl text-xs font-bold hover:opacity-90 transition-opacity">View stay <HugeiconsIcon icon={ArrowRight01Icon} size={13} /></button>
         </div>
-        <button onClick={(e) => { e.stopPropagation(); onBook(train); }} className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-accent-primary text-background rounded-xl text-xs font-bold hover:opacity-90 transition-opacity">
-          Book Now <HugeiconsIcon icon={ArrowRight01Icon} size={13} />
-        </button>
       </div>
     </div>
   );
@@ -343,29 +279,34 @@ const BUS_SUGGESTIONS    = [
   {type:"city",   label:"Bangalore",             sub:"Karnataka"},
   {type:"city",   label:"Mumbai",                sub:"Maharashtra"},
 ];
-const TRAIN_SUGGESTIONS  = [
-  {type:"station",label:"Bangalore City Jn (SBC)",sub:"Karnataka"},
-  {type:"station",label:"Chennai Central (MAS)",  sub:"Tamil Nadu"},
-  {type:"station",label:"Mumbai CSMT (CSMT)",     sub:"Maharashtra"},
-  {type:"station",label:"New Delhi (NDLS)",        sub:"Delhi"},
+const HOTEL_SUGGESTIONS  = [
+  {type:"hotel",label:"Goa beach resorts",sub:"Beachfront stays"},
+  {type:"hotel",label:"Udaipur lake hotels",sub:"Lake Pichola"},
+  {type:"hotel",label:"Mumbai city hotels",sub:"Maharashtra"},
+  {type:"hotel",label:"Delhi luxury stays",sub:"New Delhi"},
 ];
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 function BookingHubContent() {
   const searchParams  = useSearchParams();
-  const initCat       = (searchParams.get("category") as "flight"|"bus"|"train") ?? "flight";
+  const requestedCategory = searchParams.get("category");
+  const initCat = requestedCategory === "bus" ? "bus" : requestedCategory === "hotel" || requestedCategory === "train" ? "hotel" : "flight";
+  const initialDestination = searchParams.get("destination") ?? "";
 
-  const [category,      setCategory]      = useState<"flight"|"bus"|"train">(initCat);
+  const [category,      setCategory]      = useState<"flight"|"bus"|"hotel">(initCat);
   const [subcat,        setSubcat]        = useState("All Classes");
-  const [searchQuery,   setSearchQuery]   = useState("");
+  const [searchQuery,   setSearchQuery]   = useState(initialDestination);
   const [cityQuery,     setCityQuery]     = useState("");
   const [showSugg,      setShowSugg]      = useState(false);
   const [showCitySugg,  setShowCitySugg]  = useState(false);
   const [showFilters,   setShowFilters]   = useState(false);
   const [ratingFilter,  setRatingFilter]  = useState("Any Rating");
   const [stopsFilter,   setStopsFilter]   = useState("All");
-  const [priceMax,      setPriceMax]      = useState(10000);
+  const [priceMax,      setPriceMax]      = useState(initCat === "bus" ? 5000 : 50000);
   const [selectedDate,  setSelectedDate]  = useState("");
+  const [selectedCheckIn, setSelectedCheckIn] = useState(searchParams.get("checkIn") ?? "");
+  const [selectedCheckOut, setSelectedCheckOut] = useState(searchParams.get("checkOut") ?? "");
+  const [selectedGuests, setSelectedGuests] = useState(Number(searchParams.get("guests") ?? 1));
   const [cardCount,     setCardCount]     = useState(CARD_CHUNK);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [selectedItem,  setSelectedItem]  = useState<any | null>(null);
@@ -373,17 +314,17 @@ function BookingHubContent() {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const cityInputRef = useRef<HTMLInputElement | null>(null);
 
-  const subcats     = category==="flight" ? FLIGHT_SUBCATEGORIES : category==="bus" ? BUS_SUBCATEGORIES : TRAIN_SUBCATEGORIES;
-  const suggestions = category==="flight" ? FLIGHT_SUGGESTIONS   : category==="bus" ? BUS_SUGGESTIONS   : TRAIN_SUGGESTIONS;
+  const subcats     = category==="flight" ? FLIGHT_SUBCATEGORIES : category==="bus" ? BUS_SUBCATEGORIES : HOTEL_SUBCATEGORIES;
+  const suggestions = category==="flight" ? FLIGHT_SUGGESTIONS   : category==="bus" ? BUS_SUGGESTIONS   : HOTEL_SUGGESTIONS;
 
   // Reset counts when category or filters change
   useEffect(() => { 
     setSubcat(subcats[0]); 
-    setSearchQuery(""); 
+    setSearchQuery(category === "hotel" ? initialDestination : "");
     setCityQuery(""); 
     setCardCount(CARD_CHUNK); 
-    setPriceMax(category === "flight" ? 50000 : 5000);
-  }, [category]);
+    setPriceMax(category === "bus" ? 5000 : 50000);
+  }, [category, initialDestination]);
   
   useEffect(() => { setCardCount(CARD_CHUNK); }, [subcat, ratingFilter, priceMax, stopsFilter]);
 
@@ -428,26 +369,27 @@ function BookingHubContent() {
     const t = subcat==="All Types"||b.type.toLowerCase().includes(subcat.toLowerCase());
     return b.rating>=r && b.price<=priceMax && t;
   });
-  const trainsAll   = ALL_TRAINS.filter(t=>{
+  const hotelsAll   = ALL_HOTELS.filter(hotel=>{
     const r = ratingFilter==="Any Rating"?0:parseFloat(ratingFilter);
-    const c = subcat==="All Classes"||t.classes.some(cl=>subcat.includes(cl.code));
-    return t.rating>=r && c;
+    const typeMatches = subcat === "All Stays" || hotel.type.toLowerCase().includes(subcat.toLowerCase());
+    const queryMatches = !searchQuery || `${hotel.name} ${hotel.city} ${hotel.area} ${hotel.type}`.toLowerCase().includes(searchQuery.toLowerCase());
+    return hotel.rating>=r && hotel.price<=priceMax && typeMatches && queryMatches;
   });
 
   // Visible slices
   const flightsVisible  = flightsAll.slice(0,cardCount);
   const busesVisible    = busesAll.slice(0,cardCount);
-  const trainsVisible   = trainsAll.slice(0,cardCount);
+  const hotelsVisible   = hotelsAll.slice(0,cardCount);
 
-  const hasMoreCards    = cardCount    < (category==="flight"?flightsAll.length : category==="bus"?busesAll.length : trainsAll.length);
+  const hasMoreCards    = cardCount < (category==="flight" ? flightsAll.length : category==="bus" ? busesAll.length : hotelsAll.length);
 
   // Load more callback
   const loadMoreCards = useCallback(()=>{
     if (isLoadingMore||!hasMoreCards) return;
     setIsLoadingMore(true);
-    const total = category==="flight"?flightsAll.length:category==="bus"?busesAll.length:trainsAll.length;
+    const total = category==="flight" ? flightsAll.length : category==="bus" ? busesAll.length : hotelsAll.length;
     setTimeout(()=>{ setCardCount(c=>Math.min(c+CARD_CHUNK,total)); setIsLoadingMore(false); },LOAD_DELAY);
-  },[isLoadingMore,hasMoreCards,category,flightsAll.length,busesAll.length,trainsAll.length]);
+  },[isLoadingMore,hasMoreCards,category,flightsAll.length,busesAll.length,hotelsAll.length]);
 
   const cardSentinelRef  = useInfiniteScroll(loadMoreCards);
 
@@ -462,10 +404,10 @@ function BookingHubContent() {
             recommendedOptions={
               category === "flight" ? flightsAll.filter(f => f.id !== selectedItem.id).slice(0, 3) :
               category === "bus" ? busesAll.filter(b => b.id !== selectedItem.id).slice(0, 3) :
-              trainsAll.filter(t => t.id !== selectedItem.id).slice(0, 3)
+              hotelsAll.filter(hotel => hotel.id !== selectedItem.id).slice(0, 3)
             }
             onSelectRecommended={(item) => setSelectedItem(item)}
-            CardComponent={category === "flight" ? FlightCard : category === "bus" ? BusCard : TrainCard}
+            CardComponent={category === "flight" ? FlightCard : category === "bus" ? BusCard : HotelCard}
           />
         </div>
       ) : (
@@ -478,18 +420,22 @@ function BookingHubContent() {
           </Link>
           <span className="text-text-tertiary text-sm">Home</span>
           <span className="text-text-tertiary text-sm">/</span>
-          <span className="text-sm font-medium capitalize">{category} Booking</span>
+          <span className="text-sm font-medium capitalize">{category === "hotel" ? "Hotel" : category} Booking</span>
         </div>
-        <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-2">Find & Book Tickets</h1>
-        <p className="text-text-secondary text-sm">Discover flights, buses, and trains — curated just for you</p>
+        <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-2">
+          {category === "hotel" ? "Find your next stay" : "Find & Book Tickets"}
+        </h1>
+        <p className="text-text-secondary text-sm">
+          {category === "hotel" ? "Explore hotels and resorts for your next trip" : "Discover flights and buses, curated just for you"}
+        </p>
       </div>
 
       {/* ── CATEGORY TABS ── */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 mb-8">
         <div className="flex gap-2 p-1.5 bg-surface rounded-2xl w-fit border border-white/10">
-          {(["flight","bus","train"] as const).map(cat=>{
-            const icons   = {flight:Airplane01Icon, bus:BusIcon, train:TrainIcon};
-            const labels  = {flight:"Flights",     bus:"Buses",  train:"Trains"};
+          {(["flight","bus","hotel"] as const).map(cat=>{
+            const icons   = {flight:Airplane01Icon, bus:BusIcon, hotel:Hotel01Icon};
+            const labels  = {flight:"Flights",     bus:"Buses", hotel:"Hotels"};
             const active  = category===cat;
             return (
               <button key={cat} onClick={()=>setCategory(cat)}
@@ -512,6 +458,9 @@ function BookingHubContent() {
               onSearchSubmit={(p) => {
                 setSearchQuery(p.to || p.from || "");
                 if (p.date) setSelectedDate(p.date);
+                if (p.checkIn) setSelectedCheckIn(p.checkIn);
+                if (p.checkOut) setSelectedCheckOut(p.checkOut);
+                if (p.guests) setSelectedGuests(p.guests);
               }}
             />
             <div className="flex justify-end mt-4 border-t border-white/10 pt-4">
@@ -549,9 +498,9 @@ function BookingHubContent() {
               </div>
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary mb-2 block">Max Price: ₹{priceMax}</label>
-                <input type="range" min={500} max={category === "flight" ? 100000 : 5000} step={category === "flight" ? 1000 : 50} value={priceMax}
+                <input type="range" min={500} max={category === "flight" || category === "hotel" ? 100000 : 5000} step={category === "flight" || category === "hotel" ? 1000 : 50} value={priceMax}
                   onChange={e=>setPriceMax(Number(e.target.value))} className="w-full accent-accent-primary" />
-                <div className="flex justify-between text-[10px] text-text-tertiary mt-1"><span>₹500</span><span>₹{category === "flight" ? 100000 : 5000}</span></div>
+                <div className="flex justify-between text-[10px] text-text-tertiary mt-1"><span>₹500</span><span>₹{category === "flight" || category === "hotel" ? 100000 : 5000}</span></div>
               </div>
               {category==="flight"&&(
                 <div>
@@ -576,12 +525,12 @@ function BookingHubContent() {
                   </div>
                 </div>
               )}
-              {category==="train"&&(
+              {category==="hotel"&&(
                 <div>
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary mb-2 block">Quota</label>
-                  <div className="flex flex-col gap-1.5">
-                    {["General (GN)","Tatkal (TQ)","Ladies (LD)","Senior Citizen (SS)"].map(q=>(
-                      <span key={q} className="text-xs px-3 py-1.5 rounded-lg bg-surface border border-white/10 text-text-secondary cursor-pointer hover:border-accent-primary/30 transition-colors">{q}</span>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary mb-2 block">Stay features</label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["Breakfast", "Pool", "Spa", "Beach access"].map(feature=>(
+                      <span key={feature} className="text-[11px] px-2 py-1 rounded-full bg-surface border border-white/10 text-text-secondary">{feature}</span>
                     ))}
                   </div>
                 </div>
@@ -638,20 +587,20 @@ function BookingHubContent() {
           </div>
         )}
 
-        {/* ── TRAINS ── */}
-        {category==="train"&&(
+        {/* ── HOTELS ── */}
+        {category==="hotel"&&(
           <div>
             <div className="flex items-center gap-3 mb-5">
-              <h2 className="text-lg font-bold">Available Trains</h2>
-              <span className="text-xs bg-accent-primary/10 text-accent-primary border border-accent-primary/20 px-2 py-0.5 rounded-full font-bold">{trainsAll.length} found</span>
+              <h2 className="text-lg font-bold">Available stays</h2>
+              <span className="text-xs bg-accent-primary/10 text-accent-primary border border-accent-primary/20 px-2 py-0.5 rounded-full font-bold">{hotelsAll.length} found</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {trainsVisible.map(t=><TrainCard key={t.id} train={t} onBook={(item) => setSelectedItem(item)} />)}
-              {isLoadingMore&&Array.from({length:Math.min(CARD_CHUNK,trainsAll.length-cardCount)}).map((_,i)=><SkeletonCard key={`sk-tr-${i}`} />)}
+              {hotelsVisible.map(hotel=><HotelCard key={hotel.id} hotel={hotel} onBook={(item) => setSelectedItem({ ...item, checkIn: selectedCheckIn || selectedDate, checkOut: selectedCheckOut, guests: selectedGuests })} />)}
+              {isLoadingMore&&Array.from({length:Math.min(CARD_CHUNK,hotelsAll.length-cardCount)}).map((_,i)=><SkeletonCard key={`sk-hotel-${i}`} />)}
             </div>
             {hasMoreCards&&<div ref={cardSentinelRef} className="h-4 mt-6" />}
-            {!hasMoreCards&&trainsAll.length>CARD_CHUNK&&(
-              <p className="text-center text-xs text-text-tertiary mt-6">All {trainsAll.length} trains loaded</p>
+            {!hasMoreCards&&hotelsAll.length>CARD_CHUNK&&(
+              <p className="text-center text-xs text-text-tertiary mt-6">All {hotelsAll.length} stays loaded</p>
             )}
           </div>
         )}

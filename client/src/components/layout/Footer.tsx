@@ -12,7 +12,7 @@ const FOOTER_NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Flights", href: "/flights" },
   { label: "Buses", href: "/buses" },
-  { label: "Trains", href: "/trains" },
+  { label: "Hotels", href: "/hotels" },
   { label: "Community", href: "/community" },
 ];
 

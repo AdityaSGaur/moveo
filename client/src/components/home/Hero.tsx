@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Airplane01Icon, Bus01Icon, Train01Icon, Location01Icon, Ticket01Icon, Calendar01Icon } from "@hugeicons/core-free-icons";
+import { Airplane01Icon, Bus01Icon, Hotel01Icon, Location01Icon, Ticket01Icon, Calendar01Icon } from "@hugeicons/core-free-icons";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { Annotation } from "@/components/ui/Annotation";
@@ -96,7 +96,7 @@ export const Hero = () => {
         <div className="flex flex-wrap justify-center items-center gap-4 mb-16 opacity-0 hero-elem">
           <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide hover:scale-105 transition-transform cursor-pointer">Flights</span>
           <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide hover:scale-105 transition-transform cursor-pointer">Buses</span>
-          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide hover:scale-105 transition-transform cursor-pointer">Trains</span>
+          <span className="px-5 py-2 rounded-full border border-text-tertiary/20 text-xs font-medium bg-surface text-text-primary uppercase tracking-wide hover:scale-105 transition-transform cursor-pointer">Hotels</span>
         </div>
 
         {/* Sub-heading */}
@@ -108,7 +108,7 @@ export const Hero = () => {
         <div className="flex flex-wrap justify-center items-center gap-8 text-text-tertiary opacity-0 hero-elem">
           <HugeiconsIcon icon={Airplane01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
           <HugeiconsIcon icon={Bus01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
-          <HugeiconsIcon icon={Train01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
+          <HugeiconsIcon icon={Hotel01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
           <HugeiconsIcon icon={Ticket01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
           <HugeiconsIcon icon={Calendar01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
           <HugeiconsIcon icon={Location01Icon} size={24} className="hover:text-text-primary hover:-translate-y-1 transition-all cursor-pointer" />
@@ -122,7 +122,7 @@ export const Hero = () => {
             <span>•</span>
             <Link href="/book?category=bus" className="hover:text-text-primary">Buses</Link>
             <span>•</span>
-            <Link href="/book?category=train" className="hover:text-text-primary">Trains</Link>
+            <Link href="/hotels" className="hover:text-text-primary">Hotels</Link>
           </div>
         </div>
 

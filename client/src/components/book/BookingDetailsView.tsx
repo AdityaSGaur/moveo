@@ -6,6 +6,7 @@ import {
   ArrowLeft01Icon, 
   Airplane01Icon, 
   Bus01Icon as BusIcon, 
+  Hotel01Icon,
   Train01Icon as TrainIcon, 
   UserMultipleIcon,
   CheckmarkBadge01Icon,
@@ -28,7 +29,7 @@ function Stars({ rating, size=12 }: { rating:number;size?:number }) {
 
 interface BookingDetailsViewProps {
   item: any;
-  type: "flight" | "bus" | "train";
+  type: "flight" | "bus" | "train" | "hotel";
   onBack: () => void;
   recommendedOptions: any[];
   onSelectRecommended: (item: any) => void;
@@ -43,11 +44,11 @@ export const BookingDetailsView = ({
   onSelectRecommended,
   CardComponent
 }: BookingDetailsViewProps) => {
-  const [adults, setAdults] = useState(1);
+  const [adults, setAdults] = useState(item.guests ?? 1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
   // selected class/state used by pricing logic
-  const [selectedClass, setSelectedClass] = useState(item.type || (item.classes && item.classes[0]?.name) || "Standard");
+  const [selectedClass, setSelectedClass] = useState(type === "hotel" ? "Deluxe Room" : item.type || (item.classes && item.classes[0]?.name) || "Standard");
 
   // base price resolver (kept as const to avoid accidental hoisting issues)
   const getBasePrice = () => {
@@ -59,7 +60,10 @@ export const BookingDetailsView = ({
   };
 
   // Derived fare calculations should come after state and helper definitions
-  const totalPassengers = adults + children + infants || 1;
+  const totalPassengers = type === "hotel" ? adults + children : adults + children + infants || 1;
+  const stayNights = type === "hotel" && item.checkIn && item.checkOut
+    ? Math.max(1, Math.ceil((new Date(item.checkOut).getTime() - new Date(item.checkIn).getTime()) / 86400000))
+    : 1;
   const adultPrice = getBasePrice();
   const childPrice = Math.max(0, Math.round(adultPrice * 0.75));
   const infantPrice = Math.max(0, Math.round(adultPrice * 0.1));
@@ -69,7 +73,9 @@ export const BookingDetailsView = ({
     children: { count: children, unit: childPrice, subtotal: children * childPrice },
     infants: { count: infants, unit: infantPrice, subtotal: infants * infantPrice },
   };
-  const subtotalFare = fareBreakdown.adults.subtotal + fareBreakdown.children.subtotal + fareBreakdown.infants.subtotal;
+  const subtotalFare = type === "hotel"
+    ? adultPrice * stayNights
+    : fareBreakdown.adults.subtotal + fareBreakdown.children.subtotal + fareBreakdown.infants.subtotal;
   // Fees: GST percentage and platform fee percentage
   const gstPercent = 5; // percent GST
   const platformFeePercent = 2; // platform convenience fee percent
@@ -103,7 +109,7 @@ export const BookingDetailsView = ({
     return Array.from({ length: 1 }).map(() => ({ name: '', age: 30, gender: 'male' } as Passenger));
   });
 
-  const Icon = type === "flight" ? Airplane01Icon : type === "bus" ? BusIcon : TrainIcon;
+  const Icon = type === "flight" ? Airplane01Icon : type === "bus" ? BusIcon : type === "hotel" ? Hotel01Icon : TrainIcon;
 
   return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-8 duration-500">
@@ -136,42 +142,52 @@ export const BookingDetailsView = ({
                   {type === "flight" ? item.airline : type === "bus" ? item.operator : item.name}
                 </h1>
                 <div className="flex items-center gap-3 mt-1.5 text-sm font-bold tracking-widest uppercase text-text-tertiary">
-                  <span>{item.flightNo || item.busNumber || item.number}</span>
+                  <span>{type === "hotel" ? `${item.area}, ${item.city}` : item.flightNo || item.busNumber || item.number}</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-text-tertiary/30" />
                   <Stars rating={item.rating || 4.5} />
                 </div>
               </div>
             </div>
 
-            {/* Route Timeline */}
-            <div className="flex items-center justify-between bg-background/50 p-6 rounded-2xl border border-white/5 relative z-10">
-              <div className="text-left w-1/3">
-                <div className="text-3xl md:text-4xl font-bold font-mono text-text-primary">{item.departure}</div>
-                <div className="text-sm text-text-secondary mt-1 font-bold">{item.fromCode || item.from}</div>
-              </div>
-              
-              <div className="flex-1 px-4 flex flex-col items-center">
-                <span className="text-xs font-bold text-text-tertiary tracking-widest uppercase mb-3">{item.duration}</span>
-                <div className="w-full flex items-center gap-2">
-                  <div className="h-px flex-1 bg-linear-to-r from-transparent via-accent-primary/50 to-accent-primary" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-accent-primary ring-4 ring-accent-primary/20" />
-                  <div className="h-px flex-1 bg-linear-to-r from-accent-primary via-accent-primary/50 to-transparent" />
+            {type === "hotel" ? (
+              <div className="relative z-10 overflow-hidden rounded-2xl border border-white/5 bg-background/50">
+                <img src={item.image} alt={item.name} className="h-64 w-full object-cover" />
+                <div className="flex items-center justify-between gap-4 p-5">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-text-tertiary">{item.type}</p>
+                    <p className="mt-1 text-sm font-semibold text-text-primary">{item.area}, {item.city}</p>
+                    <p className="mt-1 text-xs text-text-secondary">{item.reviews?.toLocaleString("en-IN")} guest reviews</p>
+                    {item.checkIn && <p className="mt-2 text-xs text-text-secondary">{item.checkIn} {item.checkOut ? `to ${item.checkOut}` : "· 1 night"} · {item.guests} guests</p>}
+                  </div>
+                  <Stars rating={item.rating || 4.5} size={14} />
                 </div>
-                <span className="text-[10px] font-bold text-text-tertiary uppercase mt-2">
-                  {item.stops || (type === "bus" ? "Direct" : "Non-stop")}
-                </span>
               </div>
-
-              <div className="text-right w-1/3">
-                <div className="text-3xl md:text-4xl font-bold font-mono text-text-primary">{item.arrival}</div>
-                <div className="text-sm text-text-secondary mt-1 font-bold">{item.toCode || item.to}</div>
+            ) : (
+              <div className="flex items-center justify-between bg-background/50 p-6 rounded-2xl border border-white/5 relative z-10">
+                <div className="text-left w-1/3">
+                  <div className="text-3xl md:text-4xl font-bold font-mono text-text-primary">{item.departure}</div>
+                  <div className="text-sm text-text-secondary mt-1 font-bold">{item.fromCode || item.from}</div>
+                </div>
+                <div className="flex-1 px-4 flex flex-col items-center">
+                  <span className="text-xs font-bold text-text-tertiary tracking-widest uppercase mb-3">{item.duration}</span>
+                  <div className="w-full flex items-center gap-2">
+                    <div className="h-px flex-1 bg-linear-to-r from-transparent via-accent-primary/50 to-accent-primary" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-accent-primary ring-4 ring-accent-primary/20" />
+                    <div className="h-px flex-1 bg-linear-to-r from-accent-primary via-accent-primary/50 to-transparent" />
+                  </div>
+                  <span className="text-[10px] font-bold text-text-tertiary uppercase mt-2">{item.stops || (type === "bus" ? "Direct" : "Non-stop")}</span>
+                </div>
+                <div className="text-right w-1/3">
+                  <div className="text-3xl md:text-4xl font-bold font-mono text-text-primary">{item.arrival}</div>
+                  <div className="text-sm text-text-secondary mt-1 font-bold">{item.toCode || item.to}</div>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Amenities */}
             {item.amenities && (
               <div className="mt-8 relative z-10">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-text-tertiary mb-3">Included Amenities</h3>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-text-tertiary mb-3">{type === "hotel" ? "Stay amenities" : "Included Amenities"}</h3>
                 <div className="flex flex-wrap gap-2">
                   {item.amenities.map((amenity: string) => (
                     <div key={amenity} className="flex items-center gap-1.5 px-3 py-1.5 bg-surface rounded-xl border border-white/5 text-xs font-bold text-text-secondary">
@@ -188,7 +204,7 @@ export const BookingDetailsView = ({
           <div className="bg-surface rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner">
             <h3 className="text-lg font-bold font-display mb-4 flex items-center gap-2">
               <HugeiconsIcon icon={InformationCircleIcon} size={20} className="text-accent-primary" />
-              Travel Policies
+              {type === "hotel" ? "Stay Policies" : "Travel Policies"}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -196,9 +212,9 @@ export const BookingDetailsView = ({
                 <p className="text-xs text-text-secondary leading-relaxed">Free cancellation up to 24 hours before departure. A nominal fee applies for later cancellations.</p>
               </div>
               <div>
-                <h4 className="text-sm font-bold text-text-primary mb-2">Baggage Allowance</h4>
+                <h4 className="text-sm font-bold text-text-primary mb-2">{type === "hotel" ? "Check-in & check-out" : "Baggage Allowance"}</h4>
                 <p className="text-xs text-text-secondary leading-relaxed">
-                  {type === "flight" ? "15kg check-in baggage and 7kg cabin baggage included per passenger." : "Standard baggage rules apply. Up to 2 pieces of luggage per passenger."}
+                  {type === "hotel" ? "Check-in from 3:00 PM. Check-out by 11:00 AM." : type === "flight" ? "15kg check-in baggage and 7kg cabin baggage included per passenger." : "Standard baggage rules apply. Up to 2 pieces of luggage per passenger."}
                 </p>
               </div>
             </div>
@@ -213,9 +229,9 @@ export const BookingDetailsView = ({
             <div className="space-y-6">
               {/* Class Selection */}
               <div>
-                <label className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary mb-3 block">Select Class</label>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary mb-3 block">{type === "hotel" ? "Room type" : "Select Class"}</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {(type === "train" ? item.classes.map((c: any) => c.name) : type === "bus" ? [item.type, "VIP Sleeper"] : ["Economy", "Premium", "Business"]).map((cls: string) => (
+                  {(type === "train" ? item.classes.map((c: any) => c.name) : type === "hotel" ? ["Deluxe Room", "Suite"] : type === "bus" ? [item.type, "VIP Sleeper"] : ["Economy", "Premium", "Business"]).map((cls: string) => (
                     <button 
                       key={cls}
                       onClick={() => setSelectedClass(cls)}
@@ -234,7 +250,7 @@ export const BookingDetailsView = ({
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2 text-text-primary font-bold">
                       <HugeiconsIcon icon={UserMultipleIcon} size={18} />
-                      Passengers
+                      {type === "hotel" ? "Guests" : "Passengers"}
                     </div>
                     <div className="text-xs text-text-tertiary">Adults, Children, Infants</div>
                   </div>
@@ -268,7 +284,7 @@ export const BookingDetailsView = ({
                     });
                   }}
                   className="text-sm font-bold text-accent-primary hover:underline">
-                  {showPassengerDetails ? 'Hide' : 'Edit'} passenger details
+                  {showPassengerDetails ? 'Hide' : 'Edit'} {type === "hotel" ? "guest" : "passenger"} details
                 </button>
                 <div className="text-xs text-text-tertiary">Total: <span className="font-bold">{adults+children+infants}</span></div>
               </div>
@@ -277,7 +293,7 @@ export const BookingDetailsView = ({
                   {passengerDetails.map((p, idx) => (
                     <div key={idx} className="p-3 bg-surface rounded-lg border border-white/5 flex flex-col gap-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-bold">Passenger {idx+1}</div>
+                        <div className="font-bold">{type === "hotel" ? "Guest" : "Passenger"} {idx+1}</div>
                         <div className="text-xs text-text-tertiary">Type: {idx < adults ? 'Adult' : (idx < adults + children ? 'Child' : 'Infant')}</div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -305,6 +321,13 @@ export const BookingDetailsView = ({
               {/* Price Summary */}
               <div>
                 <div className="flex flex-col gap-2 text-sm text-text-secondary mb-2">
+                  {type === "hotel" ? (
+                    <div className="flex items-center justify-between">
+                      <span>Room · {stayNights} {stayNights === 1 ? "night" : "nights"}</span>
+                      <span className="font-bold">₹{adultPrice.toLocaleString("en-IN")} × {stayNights} = ₹{subtotalFare.toLocaleString("en-IN")}</span>
+                    </div>
+                  ) : (
+                    <>
                   <div className="flex items-center justify-between">
                     <span>Adults ({fareBreakdown.adults.count} x)</span>
                     <span className="font-bold">₹{fareBreakdown.adults.unit.toLocaleString('en-IN')} each — ₹{fareBreakdown.adults.subtotal.toLocaleString('en-IN')}</span>
@@ -317,6 +340,8 @@ export const BookingDetailsView = ({
                     <span>Infants ({fareBreakdown.infants.count} x)</span>
                     <span className="font-bold">₹{fareBreakdown.infants.unit.toLocaleString('en-IN')} each — ₹{fareBreakdown.infants.subtotal.toLocaleString('en-IN')}</span>
                   </div>
+                    </>
+                  )}
                 </div>
 
                 <div className="space-y-2 text-sm text-text-secondary mb-2">
@@ -410,6 +435,7 @@ export const BookingDetailsView = ({
                     flightBooking: type === 'flight' ? { flightId: item.id, flightNumber: item.flightNo || '', airlineName: item.airline || '', airlineLogo: item.logo || '', source: item.from || '', destination: item.to || '', departureTime: item.departure, arrivalTime: item.arrival, seats: [] } : undefined,
                     busBooking: type === 'bus' ? { busId: item.id, operatorName: item.operator || '', busType: item.type || '', source: item.from || '', destination: item.to || '', departureTime: item.departure, arrivalTime: item.arrival, boardingPoint: '', droppingPoint: '', seats: [], passengers: passengerDetails } : undefined,
                     trainBooking: type === 'train' ? { trainNumber: item.number || '', trainName: item.name || '', source: item.from || '', destination: item.to || '', departureTime: item.departure, arrivalTime: item.arrival, travelClass: selectedClass, pnr: '', passengers: passengerDetails, berthPreferences: [] } : undefined,
+                    hotelBooking: type === 'hotel' ? { hotelId: item.id, hotelName: item.name, city: item.city, checkIn: item.checkIn, checkOut: item.checkOut, guests: totalPassengers, roomType: selectedClass, guestsList: passengerDetails } : undefined,
                   } as any;
 
                   dispatch(addToHistory(booking));

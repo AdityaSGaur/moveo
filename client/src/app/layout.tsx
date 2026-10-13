@@ -45,15 +45,15 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Moveo — Book Flight, Bus & Train Tickets Online",
+    default: "Moveo — Book Flights, Buses & Hotels Online",
     template: "%s | Moveo",
   },
   description:
-    "Your all-in-one ticket booking platform. Book flight tickets, bus tickets, and train tickets with AI-powered recommendations, real-time seat selection, and the best deals.",
+    "Your all-in-one travel booking platform. Book flights, buses, and hotels with AI-powered recommendations and the best deals.",
   keywords: [
     "flight tickets",
     "bus booking",
-    "train booking",
+    "hotel booking",
     "ticket booking",
     "Moveo",
     "online booking",
@@ -67,15 +67,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: "Moveo",
-    title: "Moveo — Book Flight, Bus & Train Tickets Online",
-    description:
-      "Your all-in-one ticket booking platform. Book flight tickets, bus tickets, and train tickets.",
+    title: "Moveo — Book Flights, Buses & Hotels Online",
+    description: "Your all-in-one travel booking platform for flights, buses, and hotels.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Moveo — Book Flight, Bus & Train Tickets Online",
-    description:
-      "Your all-in-one ticket booking platform for flights, buses, and trains.",
+    title: "Moveo — Book Flights, Buses & Hotels Online",
+    description: "Your all-in-one travel booking platform for flights, buses, and hotels.",
   },
   robots: {
     index: true,
@@ -102,9 +100,7 @@ export default function RootLayout({
               <CustomCursor />
               <Preloader />
               <Navbar />
-              <main className="flex-grow pt-16">
-                {children}
-              </main>
+              <main className="flex-grow pt-16">{children}</main>
               <Footer />
             </LenisProvider>
           </ReduxProvider>

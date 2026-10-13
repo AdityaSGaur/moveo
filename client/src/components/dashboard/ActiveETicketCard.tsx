@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Airplane01Icon,
   Bus01Icon,
+  Hotel01Icon,
   Train01Icon,
   Ticket01Icon,
   Download01Icon,
@@ -14,7 +15,7 @@ import {
 export interface ETicket {
   id: string;
   pnr: string;
-  type: "flight" | "bus" | "train";
+  type: "flight" | "bus" | "train" | "hotel";
   operatorName: string;
   serviceName: string;
   fromCity: string;
@@ -40,6 +41,7 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
   const renderTransportIcon = (className = "w-5 h-5 text-orange-400") => {
     if (ticket.type === "flight") return <HugeiconsIcon icon={Airplane01Icon} className={className} />;
     if (ticket.type === "bus") return <HugeiconsIcon icon={Bus01Icon} className={className} />;
+    if (ticket.type === "hotel") return <HugeiconsIcon icon={Hotel01Icon} className={className} />;
     return <HugeiconsIcon icon={Train01Icon} className={className} />;
   };
 
@@ -72,7 +74,21 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
           </span>
         </div>
 
-        {/* Departure to Destination Flow */}
+        {ticket.type === "hotel" ? (
+          <div className="my-4 flex items-center justify-between gap-4 rounded-2xl bg-background/50 p-4">
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-text-tertiary">Hotel stay</div>
+              <div className="mt-1 font-display font-bold text-text-primary">{ticket.operatorName}</div>
+              <div className="text-xs text-text-secondary">{ticket.fromCity}</div>
+            </div>
+            <div className="text-right">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-text-tertiary">Check in · out</div>
+              <div className="mt-1 text-xs font-semibold text-text-primary">{ticket.departureTime} – {ticket.arrivalTime}</div>
+              <div className="text-xs text-text-secondary">{ticket.date}</div>
+            </div>
+          </div>
+        ) : (
+        /* Departure to Destination Flow */
         <div className="my-4 flex items-center justify-between gap-2">
           {/* Origin */}
           <div>
@@ -105,14 +121,15 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
             <div className="text-[10px] text-text-tertiary font-mono mt-0.5">{ticket.arrivalTime}</div>
           </div>
         </div>
+        )}
 
         {/* Footer info & E-Ticket Button */}
         <div className="pt-3 border-t border-text-tertiary/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
-              <span className="text-[9px] text-text-tertiary uppercase font-bold block">Seats</span>
+              <span className="text-[9px] text-text-tertiary uppercase font-bold block">{ticket.type === "hotel" ? "Room" : "Seats"}</span>
               <span className="font-mono text-xs font-bold text-text-primary">
-                {ticket.seats.join(", ")}
+                {ticket.type === "hotel" ? ticket.serviceName : ticket.seats.join(", ")}
               </span>
             </div>
             <div className="h-6 w-px bg-text-tertiary/10" />
@@ -129,7 +146,7 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
             className="px-3.5 py-1.5 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all active:scale-95 flex items-center gap-1.5"
           >
             <HugeiconsIcon icon={Ticket01Icon} className="w-3.5 h-3.5" />
-            <span>View E-Ticket</span>
+            <span>{ticket.type === "hotel" ? "View Booking" : "View E-Ticket"}</span>
           </button>
         </div>
       </div>
@@ -148,8 +165,8 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
               <div className="flex items-center gap-2">
                 {renderTransportIcon("w-6 h-6 text-orange-400")}
                 <div>
-                  <h3 className="font-display font-bold text-lg text-text-primary">Official E-Ticket</h3>
-                  <p className="text-xs text-text-tertiary">Moveo Verified Booking Pass</p>
+                  <h3 className="font-display font-bold text-lg text-text-primary">{ticket.type === "hotel" ? "Stay Confirmation" : "Official E-Ticket"}</h3>
+                  <p className="text-xs text-text-tertiary">Moveo Verified Booking</p>
                 </div>
               </div>
               <button
@@ -163,7 +180,7 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
             {/* Ticket Card Body */}
             <div className="p-4 rounded-2xl bg-surface-elevated border border-white/10 space-y-4">
               <div className="flex justify-between items-center text-xs">
-                <span className="text-text-tertiary">Booking Ref (PNR):</span>
+                <span className="text-text-tertiary">{ticket.type === "hotel" ? "Confirmation Ref:" : "Booking Ref (PNR):"}</span>
                 <span className="font-mono font-bold text-orange-400">{ticket.pnr}</span>
               </div>
               <div className="flex justify-between items-center text-xs">
@@ -171,20 +188,20 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
                 <span className="font-semibold text-text-primary">{ticket.operatorName} ({ticket.serviceName})</span>
               </div>
               <div className="flex justify-between items-center text-xs">
-                <span className="text-text-tertiary">Route & Date:</span>
-                <span className="font-semibold text-text-primary">{ticket.fromCity} ➔ {ticket.toCity} ({ticket.date})</span>
+                <span className="text-text-tertiary">{ticket.type === "hotel" ? "Stay & Dates:" : "Route & Date:"}</span>
+                <span className="font-semibold text-text-primary">{ticket.type === "hotel" ? `${ticket.operatorName}, ${ticket.fromCity} (${ticket.departureTime} – ${ticket.arrivalTime})` : `${ticket.fromCity} ➔ ${ticket.toCity} (${ticket.date})`}</span>
               </div>
 
               {/* Passengers */}
               <div className="pt-3 border-t border-text-tertiary/10">
                 <span className="text-[10px] text-text-tertiary font-bold uppercase tracking-wider block mb-2">
-                  Passengers ({ticket.passengers.length})
+                  {ticket.type === "hotel" ? "Guests" : "Passengers"} ({ticket.passengers.length})
                 </span>
                 <div className="space-y-1.5">
                   {ticket.passengers.map((p, idx) => (
                     <div key={idx} className="flex justify-between items-center text-xs p-2 rounded-xl bg-background/50">
                       <span className="font-bold text-text-primary">{p.name}</span>
-                      <span className="text-text-tertiary font-mono">{p.gender}, {p.age} yrs (Seat {ticket.seats[idx] || "Unassigned"})</span>
+                      <span className="text-text-tertiary font-mono">{p.gender}, {p.age} yrs{ticket.type === "hotel" ? "" : ` (Seat ${ticket.seats[idx] || "Unassigned"})`}</span>
                     </div>
                   ))}
                 </div>
@@ -217,16 +234,16 @@ export const ActiveETicketCard: React.FC<ActiveETicketCardProps> = ({ ticket }) 
                     <rect x="180" y="0" width="10" height="40" fill="black"/>
                   </svg>
                 </div>
-                <span className="text-[10px] font-mono text-text-tertiary">Scan barcode at terminal gate</span>
+                <span className="text-[10px] font-mono text-text-tertiary">{ticket.type === "hotel" ? "Show this confirmation at check-in" : "Scan barcode at terminal gate"}</span>
               </div>
             </div>
 
             <button
-              onClick={() => alert("E-Ticket PDF Download triggered!")}
+              onClick={() => alert(ticket.type === "hotel" ? "Booking confirmation PDF download triggered!" : "E-Ticket PDF Download triggered!")}
               className="w-full mt-4 py-3 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2"
             >
               <HugeiconsIcon icon={Download01Icon} className="w-4 h-4" />
-              <span>Download PDF Ticket</span>
+              <span>{ticket.type === "hotel" ? "Download Confirmation" : "Download PDF Ticket"}</span>
             </button>
           </div>
         </div>

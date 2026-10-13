@@ -77,6 +77,69 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.overscroll-effect {
+  --overscroll-progress: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.overscroll-effect__edge {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 72px;
+  opacity: 0;
+  transition: transform 140ms cubic-bezier(0.12, 0.75, 0.2, 1), opacity 100ms ease-out;
+  will-change: transform, opacity;
+}
+
+.overscroll-effect__edge::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: color-mix(in srgb, var(--foreground) 36%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--foreground) 24%, transparent);
+}
+
+.overscroll-effect__edge--top {
+  top: 0;
+  transform: scaleY(calc(var(--overscroll-progress) * 0.75));
+  transform-origin: top;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 28%, transparent), transparent 85%);
+}
+
+.overscroll-effect__edge--top::after {
+  bottom: 0;
+}
+
+.overscroll-effect__edge--bottom {
+  bottom: 0;
+  transform: scaleY(calc(var(--overscroll-progress) * 0.75));
+  transform-origin: bottom;
+  background: linear-gradient(to top, color-mix(in srgb, var(--foreground) 28%, transparent), transparent 85%);
+}
+
+.overscroll-effect__edge--bottom::after {
+  top: 0;
+}
+
+.overscroll-effect[data-edge="top"] .overscroll-effect__edge--top,
+.overscroll-effect[data-edge="bottom"] .overscroll-effect__edge--bottom {
+  opacity: calc(0.3 + var(--overscroll-progress) * 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overscroll-effect {
+    display: none;
+  }
+}
+
 /* Custom Cursor overrides — desktop only */
 @media (min-width: 769px) {
   *, html, body {

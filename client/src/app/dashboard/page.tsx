@@ -57,17 +57,17 @@ const SAMPLE_E_TICKETS: ETicket[] = [
   {
     id: "t3",
     pnr: "MOVE-12093",
-    type: "train",
-    operatorName: "Indian Railways",
-    serviceName: "12008 Shatabdi Express",
+    type: "bus",
+    operatorName: "KSRTC Airavat",
+    serviceName: "AC Sleeper",
     fromCity: "Bengaluru",
-    fromCode: "SBC",
+    fromCode: "BLR",
     toCity: "Chennai",
-    toCode: "MAS",
+    toCode: "MAA",
     departureTime: "06:00 AM",
-    arrivalTime: "11:00 AM",
+    arrivalTime: "12:00 PM",
     date: "10 Oct 2026",
-    seats: ["C2-34", "C2-35"],
+    seats: ["S1-34", "S1-35"],
     passengers: [
       { name: "Aditya Gaur", age: 26, gender: "Male" },
       { name: "Rohan Kumar", age: 27, gender: "Male" },
@@ -90,16 +90,16 @@ export default function UserDashboardPage() {
     ...reduxBookings.map((b) => ({
       id: b.id,
       pnr: b.id.toUpperCase().substring(0, 10),
-      type: (b.type as any) || "bus",
-      operatorName: "Moveo Express",
-      serviceName: "Standard Booking",
-      fromCity: "Mumbai",
-      toCity: "Goa",
-      departureTime: "09:00 AM",
-      arrivalTime: "05:00 PM",
+      type: b.type,
+      operatorName: b.hotelBooking?.hotelName || "Moveo Express",
+      serviceName: b.hotelBooking?.roomType || "Standard Booking",
+      fromCity: b.hotelBooking?.city || b.flightBooking?.source || b.busBooking?.source || b.trainBooking?.source || "Mumbai",
+      toCity: b.hotelBooking?.city || b.flightBooking?.destination || b.busBooking?.destination || b.trainBooking?.destination || "Goa",
+      departureTime: b.hotelBooking?.checkIn || "09:00 AM",
+      arrivalTime: b.hotelBooking?.checkOut || "05:00 PM",
       date: new Date(b.createdAt).toLocaleDateString(),
-      seats: ["S1", "S2"],
-      passengers: b.busBooking?.passengers || [{ name: "User", age: 25, gender: "Male" }],
+      seats: b.hotelBooking ? [] : ["S1", "S2"],
+      passengers: b.hotelBooking?.guestsList || b.busBooking?.passengers || [{ name: "User", age: 25, gender: "Male" }],
       amount: b.totalAmount,
       status: "Confirmed" as const,
     })),
@@ -144,15 +144,15 @@ export default function UserDashboardPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg sm:text-xl font-display font-bold text-text-primary flex items-center gap-2">
-                    <span>Your Active E-Tickets</span>
+                    <span>Your Active Bookings</span>
                     <HugeiconsIcon icon={Ticket01Icon} className="w-5 h-5 text-orange-400" />
                   </h2>
                   <p className="text-xs text-text-tertiary">
-                    Showing confirmed flight, bus, and train boarding passes
+                    Showing confirmed transport and hotel bookings
                   </p>
                 </div>
                 <span className="px-3 py-1 rounded-full bg-surface border border-text-tertiary/10 text-xs font-bold text-orange-400">
-                  {filteredTickets.length} Tickets
+                  {filteredTickets.length} Bookings
                 </span>
               </div>
 

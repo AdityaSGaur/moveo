@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Tabs, Card, Button, Input } from "@/components/ui";
 import places from "@/data/places";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Search01Icon, Calendar01Icon, Location01Icon, Airplane01Icon, Bus01Icon, Train01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { Search01Icon, Calendar01Icon, Location01Icon, Airplane01Icon, Bus01Icon, Hotel01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { Annotation } from "@/components/ui/Annotation";
 
 export const SmartSearch = ({ 
@@ -14,8 +14,8 @@ export const SmartSearch = ({
   initialTab,
 }: { 
   variant?: "default" | "inline";
-  onSearchSubmit?: (params: { from: string, to: string, date: string, type?: string, available?: number }) => void;
-  initialTab?: "flight" | "bus" | "train";
+  onSearchSubmit?: (params: { from: string, to: string, date: string, type?: string, available?: number, checkIn?: string, checkOut?: string, guests?: number }) => void;
+  initialTab?: "flight" | "bus" | "hotel";
 }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>(initialTab ?? "flight");
@@ -51,8 +51,24 @@ export const SmartSearch = ({
   };
 
   const handleSearch = () => {
+    if (activeTab === "hotel") {
+      const destination = toCity || fromCity;
+      const params = new URLSearchParams({
+        destination,
+        checkIn: departDate,
+        checkOut: returnDate,
+        guests: String(adults + children),
+      });
+      if (onSearchSubmit) {
+        onSearchSubmit({ from: destination, to: destination, date: departDate, type: "hotel", checkIn: departDate, checkOut: returnDate, guests: adults + children });
+      } else {
+        router.push(`/book?category=hotel&${params.toString()}`);
+      }
+      return;
+    }
+
     if (onSearchSubmit) {
-      onSearchSubmit({ from: fromCity, to: toCity, date: departDate, type: "flight" });
+      onSearchSubmit({ from: fromCity, to: toCity, date: departDate, type: activeTab });
     } else {
       const query = new URLSearchParams({
         category: activeTab,
@@ -88,7 +104,7 @@ export const SmartSearch = ({
   const tabs = [
     { id: "flight", label: "Flights", icon: Airplane01Icon },
     { id: "bus", label: "Buses", icon: Bus01Icon },
-    { id: "train", label: "Trains", icon: Train01Icon },
+    { id: "hotel", label: "Hotels", icon: Hotel01Icon },
   ];
 
   // --- Autocomplete input component ---
@@ -493,38 +509,33 @@ export const SmartSearch = ({
             </Button>
           </div>
         );
-      case "train":
+      case "hotel":
         return (
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative min-w-0">
               <div className="h-14 bg-surface px-4 rounded-2xl flex items-center">
                 <AutoCompleteInput
                   icon={<HugeiconsIcon icon={Location01Icon} size={20} className="text-text-secondary" />}
-                  value={fromCity}
-                  onChange={(v) => setFromCity(v)}
-                  placeholder="From Station"
-                />
-              </div>
-            </div>
-            <div className="flex-1 relative min-w-0">
-              <div className="h-14 bg-surface px-4 rounded-2xl flex items-center">
-                <AutoCompleteInput
-                  icon={<HugeiconsIcon icon={Location01Icon} size={20} className="text-text-secondary" />}
                   value={toCity}
                   onChange={(v) => setToCity(v)}
-                  placeholder="To Station"
+                  placeholder="City or destination"
                 />
               </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <Input
-                type="date"
-                icon={<HugeiconsIcon icon={Calendar01Icon} size={20} className="text-text-secondary" />}
-                className="h-14 bg-surface"
-              />
+            <div className="flex-1 min-w-0 h-14 rounded-2xl bg-surface px-4 flex flex-col justify-center">
+              <label htmlFor="hotel-check-in" className="text-[9px] font-bold uppercase tracking-wider text-text-tertiary">Check-in</label>
+              <input id="hotel-check-in" type="date" value={departDate} onChange={(event) => setDepartDate(event.target.value)} className="w-full bg-transparent text-xs font-semibold text-text-primary focus:outline-none" />
             </div>
-            <Button size="lg" className="h-14 px-8 shrink-0">
-              Search Trains
+            <div className="flex-1 min-w-0 h-14 rounded-2xl bg-surface px-4 flex flex-col justify-center">
+              <label htmlFor="hotel-check-out" className="text-[9px] font-bold uppercase tracking-wider text-text-tertiary">Check-out</label>
+              <input id="hotel-check-out" type="date" value={returnDate} onChange={(event) => setReturnDate(event.target.value)} className="w-full bg-transparent text-xs font-semibold text-text-primary focus:outline-none" />
+            </div>
+            <div className="w-full md:w-28 shrink-0 h-14 rounded-2xl bg-surface px-4 flex flex-col justify-center">
+              <label htmlFor="hotel-guests" className="text-[9px] font-bold uppercase tracking-wider text-text-tertiary">Guests</label>
+              <input id="hotel-guests" type="number" min={1} value={adults + children} onChange={(event) => setAdults(Math.max(1, Number(event.target.value)))} className="w-full bg-transparent text-xs font-semibold text-text-primary focus:outline-none" />
+            </div>
+            <Button onClick={handleSearch} size="lg" className="h-14 px-8 shrink-0">
+              Find Stays
             </Button>
           </div>
         );

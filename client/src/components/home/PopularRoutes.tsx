@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Bus01Icon, Train01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { Bus01Icon, Hotel01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 
 const ROUTES = [
   {
@@ -28,23 +28,23 @@ const ROUTES = [
   },
   {
     id: 3,
-    type: "train",
-    fromCity: "Delhi",
-    toCity: "Varanasi",
-    subtitle: "Vande Bharat",
-    duration: "8h 00m",
-    image: "/images/vande-bharat.png",
-    href: "/trains?from=Delhi&to=Varanasi",
+    type: "hotel",
+    fromCity: "Goa",
+    toCity: "Beachfront stays",
+    subtitle: "Resorts · from ₹6,200/night",
+    duration: "Popular stay",
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=85",
+    href: "/book?category=hotel&destination=Goa",
   },
   {
     id: 4,
-    type: "train",
-    fromCity: "Mumbai",
-    toCity: "Delhi",
-    subtitle: "Rajdhani",
-    duration: "15h 00m",
-    image: "/images/grid-5.jpg",
-    href: "/trains?from=Mumbai&to=Delhi",
+    type: "hotel",
+    fromCity: "Udaipur",
+    toCity: "Lake-view stays",
+    subtitle: "Boutique hotels · from ₹8,400/night",
+    duration: "Popular stay",
+    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85",
+    href: "/book?category=hotel&destination=Udaipur",
   },
 ];
 
@@ -56,7 +56,7 @@ export const PopularRoutes = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-10 md:mb-16 gap-4">
         <div className="flex items-center gap-4 md:gap-6 flex-1 min-w-0">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight text-text-primary">
-            Popular Routes
+            Popular Routes & Stays
           </h2>
           <div className="h-px flex-1 bg-linear-to-r from-text-tertiary/20 to-transparent hidden sm:block" />
         </div>
@@ -97,13 +97,11 @@ export const PopularRoutes = () => {
             {/* Bottom text — always white, no color change on hover */}
             <div className="absolute bottom-0 left-0 right-0 z-20 p-5 flex flex-col items-start text-left">
               <h3 className="text-lg sm:text-xl font-display font-bold text-white mb-1.5 tracking-tight leading-tight">
-                {route.fromCity}
-                <span className="mx-2 text-white/40 font-light">→</span>
-                {route.toCity}
+                {route.type === "hotel" ? `${route.fromCity} · ${route.toCity}` : <>{route.fromCity}<span className="mx-2 text-white/40 font-light">→</span>{route.toCity}</>}
               </h3>
               <div className="flex items-center gap-1.5 text-white/65 text-xs font-medium">
                 <HugeiconsIcon
-                  icon={route.type === "bus" ? Bus01Icon : Train01Icon}
+                  icon={route.type === "bus" ? Bus01Icon : Hotel01Icon}
                   size={12}
                   className="text-white/80 shrink-0"
                 />

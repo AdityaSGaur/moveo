@@ -6,7 +6,7 @@ export const siteConfig = {
   name: "Moveo",
   tagline: "Book. Ride. Watch. Repeat.",
   description:
-    "Your all-in-one ticket booking platform for flights, buses, and trains.",
+    "Your all-in-one travel booking platform for flights, buses, and hotels.",
   url: "https://moveo.app",
   ogImage: "/images/og-image.png",
 
@@ -31,7 +31,7 @@ export const siteConfig = {
 export const navLinks = [
   { href: "/flights", label: "Flights", icon: "✈️", module: "flight" as const },
   { href: "/buses", label: "Buses", icon: "🚌", module: "bus" as const },
-  { href: "/trains", label: "Trains", icon: "🚆", module: "train" as const },
+  { href: "/hotels", label: "Hotels", icon: "🏨", module: "hotel" as const },
 ];
 
 export const footerLinks = {
@@ -45,7 +45,7 @@ export const footerLinks = {
   services: [
     { href: "/flights", label: "Flights" },
     { href: "/buses", label: "Bus Booking" },
-    { href: "/trains", label: "Train Booking" },
+    { href: "/hotels", label: "Hotel Booking" },
     { href: "/offers", label: "Offers" },
     { href: "/gift-cards", label: "Gift Cards" },
   ],

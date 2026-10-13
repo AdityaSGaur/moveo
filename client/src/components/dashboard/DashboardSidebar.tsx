@@ -12,7 +12,7 @@ import {
   Add01Icon,
   Airplane01Icon,
   Bus01Icon,
-  Train01Icon,
+  Hotel01Icon,
 } from "@hugeicons/core-free-icons";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { logout } from "@/store/slices/authSlice";
@@ -196,12 +196,12 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
             </button>
 
             <button
-              onClick={() => router.push("/trains")}
+              onClick={() => router.push("/hotels")}
               className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-text-secondary hover:text-text-primary hover:bg-surface-elevated transition-colors"
             >
               <div className="flex items-center gap-2">
-                <HugeiconsIcon icon={Train01Icon} className="w-3.5 h-3.5 text-orange-400" />
-                <span>Train Tickets</span>
+                <HugeiconsIcon icon={Hotel01Icon} className="w-3.5 h-3.5 text-orange-400" />
+                <span>Hotel Stays</span>
               </div>
               <span className="text-[10px] text-orange-400 font-bold">Book</span>
             </button>

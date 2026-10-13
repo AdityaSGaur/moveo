@@ -22,7 +22,7 @@ import { logout } from "@/store/slices/authSlice";
 const MODULES = [
   { id: "flights", label: "Flights", path: "/flights" },
   { id: "buses", label: "Buses", path: "/buses" },
-  { id: "trains", label: "Trains", path: "/trains" },
+  { id: "hotels", label: "Hotels", path: "/hotels" },
   { id: "book", label: "Book", path: "/book" },
   { id: "community", label: "Community", path: "/community" },
 ];
